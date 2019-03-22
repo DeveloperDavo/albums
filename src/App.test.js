@@ -1,9 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import { shallow } from "enzyme";
+import axios from "axios";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+import App from "./App";
+
+jest.mock("axios");
+
+it("fetches albums on mount", () => {
+  shallow(<App />);
+
+  expect(axios.get).toHaveBeenCalledWith(
+    "https://jsonplaceholder.typicode.com/albums"
+  );
 });
