@@ -5,6 +5,7 @@ export default function GridItem(props) {
   const { title, userId } = props
   return (
     <>
+      <img src='https://via.placeholder.com/150/00ff' alt={title} />
       <p className="GridItem__title">{title}</p>
       <p className="GridItem__userId">{userId}</p>
     </>

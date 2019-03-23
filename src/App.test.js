@@ -51,3 +51,11 @@ it('displays grid item with album title and user id', async () => {
   expect(gridItem.dive().find('.GridItem__title').text()).toBe(data[0].title)
   expect(gridItem.dive().find('.GridItem__userId').text()).toBe(data[0].userId.toString())
 })
+
+it('displays grid item with album cover image', async () => {
+  const wrapper = await shallow(<App />)
+
+  const gridItem = wrapper.find(GridItem).at(0)
+  expect(gridItem.dive().find('img').props().src).toBe('https://via.placeholder.com/150/00ff')
+  expect(gridItem.dive().find('img').props().alt).toBe(data[0].title)
+})
