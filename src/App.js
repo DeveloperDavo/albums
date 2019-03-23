@@ -13,7 +13,7 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .get('https://jsonplaceholder.typicode.com/albums')
+      .get('https://jsonplaceholder.typicode.com/albums?_start=0&_limit=20')
       .then(response => this.setState({ albums: response.data }))
   }
 

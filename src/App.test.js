@@ -24,11 +24,11 @@ beforeEach(() => {
   axios.get.mockResolvedValue({ data })
 })
 
-it('fetches albums on mount', () => {
+it('fetches albums on mount with a start of 0 and a limit of 20', () => {
   shallow(<App />)
 
   expect(axios.get).toHaveBeenCalledWith(
-    'https://jsonplaceholder.typicode.com/albums'
+    'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=20'
   )
 })
 
