@@ -17,7 +17,9 @@ class App extends Component {
   }
 
   render() {
-    const gridItems = this.state.albums.map((album, index) => <GridItem key={index} />)
+    const gridItems = this.state.albums.map(album => (
+      <GridItem key={album.id} title={album.title} userId={album.userId} />
+    ))
     return <div>{gridItems}</div>
   }
 }
