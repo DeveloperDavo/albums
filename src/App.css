@@ -1,6 +1,9 @@
 .App {
+  background-color: lightgrey;
+}
+
+.Grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: lightgrey;
 }

@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import App from './App'
 import GridItem from './GridItem'
+import PageLimitSelect from './PageLimitSelect';
 
 jest.mock('axios')
 
@@ -58,4 +59,14 @@ it('displays grid item with album cover image', async () => {
   const gridItem = wrapper.find(GridItem).at(0)
   expect(gridItem.dive().find('img').props().src).toBe('https://via.placeholder.com/150/00ff')
   expect(gridItem.dive().find('img').props().alt).toBe(data[0].title)
+})
+
+it('fetches albums with selected limit', async () => {
+  const wrapper = await shallow(<App />)
+
+  wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 30 } } );
+
+  expect(axios.get).toHaveBeenLastCalledWith(
+    'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
+  )
 })
