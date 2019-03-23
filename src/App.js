@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react'
+import axios from 'axios'
 
-import logo from "./logo.svg";
-import "./App.css";
+import logo from './logo.svg'
+import './App.css'
 
 class App extends Component {
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/albums");
+    axios.get('https://jsonplaceholder.typicode.com/albums')
   }
 
   render() {
@@ -27,8 +27,8 @@ class App extends Component {
           </a>
         </header>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
