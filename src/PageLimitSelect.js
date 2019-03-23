@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './PageLimitSelect.css'
+
 export default function PageLimitSelect(props) {
   const options = [20, 30, 50].map(limit => {
     return (
@@ -9,7 +11,12 @@ export default function PageLimitSelect(props) {
       </option>
     )
   })
-  return <select onChange={props.onChange}>{options}</select>
+  return (
+    <div className="PageLimitSelect">
+      <label>Number of albums per page: </label>
+      <select onChange={props.onChange}>{options}</select>
+    </div>
+  )
 }
 
 PageLimitSelect.propTypes = {
