@@ -61,12 +61,13 @@ it('displays grid item with album cover image', async () => {
   expect(gridItem.dive().find('img').props().alt).toBe(data[0].title)
 })
 
-it('fetches albums with selected limit', async () => {
-  const wrapper = await shallow(<App />)
+it('fetches albums with selected limit', () => {
+  const wrapper = shallow(<App />)
 
   wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 30 } } );
 
   expect(axios.get).toHaveBeenLastCalledWith(
     'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
   )
+})
 })
