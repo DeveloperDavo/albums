@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './Pagination.css'
 
-export default function Pagination (props) {
+export default function Pagination(props) {
   return (
     <button className="Pagination__next" onClick={props.onClick}>
       <img src="right-chevron.svg" alt="right chevron" />

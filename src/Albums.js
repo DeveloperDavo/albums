@@ -3,16 +3,16 @@ import axios from 'axios'
 import queryString from 'query-string'
 
 import GridItem from './GridItem'
-import PageLimitSelect from './PageLimitSelect';
+import PageLimitSelect from './PageLimitSelect'
 
 import './Albums.css'
-import Pagination from './Pagination';
+import Pagination from './Pagination'
 
 class Albums extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      albums: [],
+      albums: []
     }
   }
 
@@ -28,7 +28,9 @@ class Albums extends Component {
   }
 
   handlePageLimitChange = event => {
-    this.props.history.push(`${this.props.match.path}?limit=${event.target.value}`)
+    this.props.history.push(
+      `${this.props.match.path}?limit=${event.target.value}`
+    )
   }
 
   handleNextButtonClick = () => {
@@ -36,11 +38,16 @@ class Albums extends Component {
     const start = queryValues.start
     const limit = queryValues.limit
     const nextStart = Number(start) + Number(limit)
-    this.props.history.push(`${this.props.match.path}?start=${nextStart}&limit=${limit}`)
+    this.props.history.push(
+      `${this.props.match.path}?start=${nextStart}&limit=${limit}`
+    )
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.location.search !== prevProps.location.search || this.state.pageStart !== prevState.pageStart) {
+    if (
+      this.props.location.search !== prevProps.location.search ||
+      this.state.pageStart !== prevState.pageStart
+    ) {
       this.getAlbums()
     }
   }

@@ -5,9 +5,9 @@ configure({ adapter: new Adapter() })
 
 beforeEach(() => {
   jest.resetAllMocks()
-  global.console.error = jest.fn();
+  global.console.error = jest.fn()
 })
 
 afterEach(() => {
-  expect(global.console.error).not.toBeCalled();
-});
+  expect(global.console.error).not.toBeCalled()
+})
