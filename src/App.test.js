@@ -81,3 +81,25 @@ it('fetches next page of albums on next button click', () => {
     'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=20'
   )
 })
+
+it('fetches next page of albums with limit 50 on next button click', () => {
+  const wrapper = shallow(<App />)
+
+  wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 50 } } );
+  wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
+
+  expect(axios.get).toHaveBeenLastCalledWith(
+    'https://jsonplaceholder.typicode.com/albums?_start=50&_limit=50'
+  )
+})
+
+it('fetches next page of albums with start 40 and limit 20 on next button click', () => {
+  const wrapper = shallow(<App />)
+
+  wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
+  wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
+
+  expect(axios.get).toHaveBeenLastCalledWith(
+    'https://jsonplaceholder.typicode.com/albums?_start=40&_limit=20'
+  )
+})

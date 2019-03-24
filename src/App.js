@@ -11,22 +11,32 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      albums: []
+      albums: [],
+      pageStart: 0,
+      pageLimit: 20,
     }
   }
 
-  getAlbums = (start = 0, limit = 20) => {
+  getAlbums = () => {
+    const { pageStart, pageLimit } = this.state
     axios
-      .get(`https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`)
+      .get(`https://jsonplaceholder.typicode.com/albums?_start=${pageStart}&_limit=${pageLimit}`)
       .then(response => this.setState({ albums: response.data }))
   }
 
   handlePageLimitChange = (event) => {
-    this.getAlbums(0, event.target.value)
+    this.setState({ pageLimit: event.target.value })
   }
 
   handleNextButtonClick = () => {
-    this.getAlbums(20)
+    const { pageStart, pageLimit } = this.state
+    this.setState({ pageStart: pageStart + pageLimit })
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.pageLimit !== prevState.pageLimit || this.state.pageStart !== prevState.pageStart) {
+      this.getAlbums()
+    }
   }
 
   componentDidMount() {
