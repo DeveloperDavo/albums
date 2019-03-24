@@ -5,6 +5,7 @@ import axios from 'axios'
 import App from './App'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect';
+import Pagination from './Pagination'
 
 jest.mock('axios')
 
@@ -70,4 +71,13 @@ it('fetches albums with selected limit', () => {
     'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
   )
 })
+
+it('fetches next page of albums on next button click', () => {
+  const wrapper = shallow(<App />)
+
+  wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
+
+  expect(axios.get).toHaveBeenLastCalledWith(
+    'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=20'
+  )
 })

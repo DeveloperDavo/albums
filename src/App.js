@@ -15,14 +15,18 @@ class App extends Component {
     }
   }
 
-  getAlbums = (limit = 20) => {
+  getAlbums = (start = 0, limit = 20) => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/albums?_start=0&_limit=${limit}`)
+      .get(`https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`)
       .then(response => this.setState({ albums: response.data }))
   }
 
   handlePageLimitChange = (event) => {
-    this.getAlbums(event.target.value)
+    this.getAlbums(0, event.target.value)
+  }
+
+  handleNextButtonClick = () => {
+    this.getAlbums(20)
   }
 
   componentDidMount() {
@@ -40,7 +44,7 @@ class App extends Component {
           {gridItems}
         </div>
         <div className="PaginationWrapper">
-          <Pagination />
+          <Pagination onClick={this.handleNextButtonClick} />
         </div>
       </div>
     )
