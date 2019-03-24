@@ -5,6 +5,7 @@ import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect';
 
 import './App.css'
+import Pagination from './Pagination';
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,9 @@ class App extends Component {
         <PageLimitSelect onChange={this.handlePageLimitChange} />
         <div className="Grid">
           {gridItems}
+        </div>
+        <div className="PaginationWrapper">
+          <Pagination />
         </div>
       </div>
     )

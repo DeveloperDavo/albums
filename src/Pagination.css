@@ -1,0 +1,8 @@
+.Pagination__next {
+  padding: 1rem;
+  background-color: white;
+}
+
+.Pagination__next img {
+  height: 2rem;
+}
