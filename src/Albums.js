@@ -40,6 +40,12 @@ class Albums extends Component {
     this.pushToHistory(nextStart, queryValues.limit)
   }
 
+  handlePreviousButtonClick = () => {
+    const queryValues = queryString.parse(this.props.location.search)
+    const previousStart = Number(queryValues.start) - Number(queryValues.limit)
+    this.pushToHistory(previousStart, queryValues.limit)
+  }
+
   pushToHistory(start = 0, limit = 20) {
     this.props.history.push(
       `${this.props.match.path}?start=${start}&limit=${limit}`
@@ -68,9 +74,10 @@ class Albums extends Component {
       <div className="Albums">
         <PageLimitSelect onChange={this.handlePageLimitChange} />
         <div className="Grid">{gridItems}</div>
-        <div className="PaginationWrapper">
-          <Pagination onClick={this.handleNextButtonClick} />
-        </div>
+        <Pagination
+          onPreviousClick={this.handlePreviousButtonClick}
+          onNextClick={this.handleNextButtonClick}
+        />
       </div>
     )
   }

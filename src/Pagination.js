@@ -5,12 +5,18 @@ import './Pagination.css'
 
 export default function Pagination(props) {
   return (
-    <button className="Pagination__next" onClick={props.onClick}>
-      <img src="right-chevron.svg" alt="right chevron" />
-    </button>
+    <div className="Pagination">
+      <button className="Pagination__btn" onClick={props.onPreviousClick}>
+        <img src="left-chevron.svg" alt="left chevron" />
+      </button>
+      <button className="Pagination__btn" onClick={props.onNextClick}>
+        <img src="right-chevron.svg" alt="right chevron" />
+      </button>
+    </div>
   )
 }
 
 Pagination.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onPreviousClick: PropTypes.func.isRequired,
+  onNextClick: PropTypes.func.isRequired
 }

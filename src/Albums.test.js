@@ -57,6 +57,9 @@ it('sets start and keeps limit params in url upon clicking next', () => {
   const push = jest.fn()
   const props = {
     ...defaultProps,
+    location: {
+      search: '?start=60&limit=30'
+    },
     history: { push },
     match: { path: '/albums' }
   }
@@ -65,9 +68,28 @@ it('sets start and keeps limit params in url upon clicking next', () => {
   wrapper
     .find(Pagination)
     .dive()
-    .find('.Pagination__next')
+    .find('.Pagination__btn')
+    .at(0)
     .simulate('click')
 
+  expect(push).toHaveBeenCalledWith('/albums?start=30&limit=30')
+})
+
+it('sets start and keeps limit params in url upon clicking previous', () => {
+  const push = jest.fn()
+  const props = {
+    ...defaultProps,
+    history: { push },
+    match: { path: '/albums' }
+  }
+  const wrapper = shallow(<Albums {...props} />)
+
+  wrapper
+    .find(Pagination)
+    .dive()
+    .find('.Pagination__btn')
+    .at(1)
+    .simulate('click')
   expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
 })
 
