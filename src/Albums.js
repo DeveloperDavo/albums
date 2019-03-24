@@ -13,16 +13,16 @@ class Albums extends Component {
     super(props)
     this.state = {
       albums: [],
-      pageStart: 0
     }
   }
 
   getAlbums = () => {
-    const { pageStart } = this.state
-    const limit = queryString.parse(this.props.location.search).limit
+    const queryValues = queryString.parse(this.props.location.search)
+    const start = queryValues.start
+    const limit = queryValues.limit
     axios
       .get(
-        `https://jsonplaceholder.typicode.com/albums?_start=${pageStart}&_limit=${limit}`
+        `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
       )
       .then(response => this.setState({ albums: response.data }))
   }
@@ -32,9 +32,11 @@ class Albums extends Component {
   }
 
   handleNextButtonClick = () => {
-    const { pageStart } = this.state
-    const limit = queryString.parse(this.props.location.search).limit
-    this.setState({ pageStart: pageStart + Number(limit) })
+    const queryValues = queryString.parse(this.props.location.search)
+    const start = queryValues.start
+    const limit = queryValues.limit
+    const nextStart = Number(start) + Number(limit)
+    this.props.history.push(`${this.props.match.path}?start=${nextStart}&limit=${limit}`)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
