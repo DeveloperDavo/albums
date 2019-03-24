@@ -6,6 +6,7 @@ import Albums from './Albums'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
+import Error from './Error'
 
 jest.mock('axios')
 
@@ -162,4 +163,17 @@ it('displays grid item with album cover image', async () => {
       .find('img')
       .props().alt
   ).toBe(data[0].title)
+})
+
+it('does not display any errors', async () => {
+  const wrapper = await shallow(<Albums {...defaultProps} />)
+
+  expect(wrapper.find(Error)).toHaveLength(0)
+})
+it('displays error if fetch fails', async () => {
+  axios.get.mockRejectedValue(new Error())
+
+  const wrapper = await await shallow(<Albums {...defaultProps} />)
+
+  expect(wrapper.find(Error)).toHaveLength(1)
 })

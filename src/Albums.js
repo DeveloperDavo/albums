@@ -4,15 +4,18 @@ import queryString from 'query-string'
 
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
+import Pagination from './Pagination'
+import Error from './Error'
 
 import './Albums.css'
-import Pagination from './Pagination'
+import './Error.css'
 
 class Albums extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      albums: []
+      albums: [],
+      hasError: false
     }
   }
 
@@ -25,6 +28,7 @@ class Albums extends Component {
         `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
       )
       .then(response => this.setState({ albums: response.data }))
+      .catch(error => this.setState({ hasError: true }))
   }
 
   handlePageLimitChange = event => {
@@ -73,7 +77,11 @@ class Albums extends Component {
     return (
       <div className="Albums">
         <PageLimitSelect onChange={this.handlePageLimitChange} />
-        <div className="Grid">{gridItems}</div>
+        {!this.state.hasError ? (
+          <div className="Grid">{gridItems}</div>
+        ) : (
+          <Error />
+        )}
         <Pagination
           onPreviousClick={this.handlePreviousButtonClick}
           onNextClick={this.handleNextButtonClick}
