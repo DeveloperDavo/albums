@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import axios from 'axios'
 
-import App from './App'
+import Albums from './Albums'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect';
 import Pagination from './Pagination'
@@ -46,7 +46,7 @@ it('fetches albums on mount', () => {
     },
     match: { path: '/albums' }
   }
-  shallow(<App {...props} />)
+  shallow(<Albums {...props} />)
 
   expect(axios.get).toHaveBeenCalledWith(
     'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
@@ -60,7 +60,7 @@ it('sets limit query param in url upon selecting a limit', () => {
     history: { push },
     match: { path: '/albums' }
   }
-  const wrapper = shallow(<App {...props} />)
+  const wrapper = shallow(<Albums {...props} />)
 
   wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 30 } });
 
@@ -68,19 +68,19 @@ it('sets limit query param in url upon selecting a limit', () => {
 })
 
 it('displays grid items on mount', async () => {
-  const wrapper = await shallow(<App {...defaultProps} />)
+  const wrapper = await shallow(<Albums {...defaultProps} />)
 
   expect(wrapper.find(GridItem)).toHaveLength(data.length)
 })
 
 it('renders grid item with album id as key', async () => {
-  const wrapper = await shallow(<App {...defaultProps} />)
+  const wrapper = await shallow(<Albums {...defaultProps} />)
 
   expect(wrapper.find(GridItem).at(0).key()).toBe(data[0].id.toString())
 })
 
 it('displays grid item with album title and user id', async () => {
-  const wrapper = await shallow(<App {...defaultProps} />)
+  const wrapper = await shallow(<Albums {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(gridItem.dive().find('.GridItem__title').text()).toBe(data[0].title)
@@ -88,7 +88,7 @@ it('displays grid item with album title and user id', async () => {
 })
 
 it('displays grid item with album cover image', async () => {
-  const wrapper = await shallow(<App {...defaultProps} />)
+  const wrapper = await shallow(<Albums {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(gridItem.dive().find('img').props().src).toBe('https://via.placeholder.com/150/00ff')
@@ -96,7 +96,7 @@ it('displays grid item with album cover image', async () => {
 })
 
 it('fetches next page of albums on next button click', () => {
-  const wrapper = shallow(<App {...defaultProps} />)
+  const wrapper = shallow(<Albums {...defaultProps} />)
 
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
 
@@ -106,7 +106,7 @@ it('fetches next page of albums on next button click', () => {
 })
 
 it('fetches 3rd page', () => {
-  const wrapper = shallow(<App {...defaultProps} />)
+  const wrapper = shallow(<Albums {...defaultProps} />)
 
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');

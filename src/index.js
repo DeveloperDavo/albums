@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Route } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
 
-import App from './App.js'
+import Albums from './Albums'
 
 import * as serviceWorker from './serviceWorker'
 
@@ -12,7 +12,7 @@ import './index.css'
 
 ReactDOM.render(
   <BrowserRouter>
-    <Route path='/albums' component={App}/>
+    <Route path='/albums' component={Albums}/>
   </BrowserRouter>,
   document.getElementById('root')
 )

@@ -5,10 +5,10 @@ import queryString from 'query-string'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect';
 
-import './App.css'
+import './Albums.css'
 import Pagination from './Pagination';
 
-class App extends Component {
+class Albums extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -53,7 +53,7 @@ class App extends Component {
     ))
 
     return (
-      <div className="App">
+      <div className="Albums">
         <PageLimitSelect onChange={this.handlePageLimitChange} />
         <div className="Grid">{gridItems}</div>
         <div className="PaginationWrapper">
@@ -64,4 +64,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default Albums
