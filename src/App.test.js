@@ -22,32 +22,65 @@ const data = [
   }
 ]
 
+const defaultProps = {
+  history: {
+    push: jest.fn()
+  },
+  location: {
+    search: '?limit=20'
+  },
+  match: {
+    path: '/path'
+  }
+}
+
 beforeEach(() => {
   axios.get.mockResolvedValue({ data })
 })
 
-it('fetches albums on mount with a start of 0 and a limit of 20', () => {
-  shallow(<App />)
+it('fetches albums on mount', () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?limit=30'
+    },
+    match: { path: '/albums' }
+  }
+  shallow(<App {...props} />)
 
   expect(axios.get).toHaveBeenCalledWith(
-    'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=20'
+    'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
   )
 })
 
+it('sets limit query param in url upon selecting a limit', () => {
+  const push = jest.fn()
+  const props = {
+    ...defaultProps,
+    history: { push },
+    match: { path: '/albums' }
+  }
+  const wrapper = shallow(<App {...props} />)
+
+  wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 30 } });
+
+  expect(push).toHaveBeenCalledWith('/albums?limit=30')
+})
+
 it('displays grid items on mount', async () => {
-  const wrapper = await shallow(<App />)
+  const wrapper = await shallow(<App {...defaultProps} />)
 
   expect(wrapper.find(GridItem)).toHaveLength(data.length)
 })
 
 it('renders grid item with album id as key', async () => {
-  const wrapper = await shallow(<App />)
+  const wrapper = await shallow(<App {...defaultProps} />)
 
   expect(wrapper.find(GridItem).at(0).key()).toBe(data[0].id.toString())
 })
 
 it('displays grid item with album title and user id', async () => {
-  const wrapper = await shallow(<App />)
+  const wrapper = await shallow(<App {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(gridItem.dive().find('.GridItem__title').text()).toBe(data[0].title)
@@ -55,25 +88,15 @@ it('displays grid item with album title and user id', async () => {
 })
 
 it('displays grid item with album cover image', async () => {
-  const wrapper = await shallow(<App />)
+  const wrapper = await shallow(<App {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(gridItem.dive().find('img').props().src).toBe('https://via.placeholder.com/150/00ff')
   expect(gridItem.dive().find('img').props().alt).toBe(data[0].title)
 })
 
-it('fetches albums with selected limit', () => {
-  const wrapper = shallow(<App />)
-
-  wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 30 } } );
-
-  expect(axios.get).toHaveBeenLastCalledWith(
-    'https://jsonplaceholder.typicode.com/albums?_start=0&_limit=30'
-  )
-})
-
 it('fetches next page of albums on next button click', () => {
-  const wrapper = shallow(<App />)
+  const wrapper = shallow(<App {...defaultProps} />)
 
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
 
@@ -82,19 +105,8 @@ it('fetches next page of albums on next button click', () => {
   )
 })
 
-it('fetches next page of albums with limit 50 on next button click', () => {
-  const wrapper = shallow(<App />)
-
-  wrapper.find(PageLimitSelect).dive().find('select').simulate('change', { target: { value: 50 } } );
-  wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
-
-  expect(axios.get).toHaveBeenLastCalledWith(
-    'https://jsonplaceholder.typicode.com/albums?_start=50&_limit=50'
-  )
-})
-
-it('fetches next page of albums with start 40 and limit 20 on next button click', () => {
-  const wrapper = shallow(<App />)
+it('fetches 3rd page', () => {
+  const wrapper = shallow(<App {...defaultProps} />)
 
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
   wrapper.find(Pagination).dive().find('.Pagination__next').simulate('click');
