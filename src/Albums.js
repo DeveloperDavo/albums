@@ -28,18 +28,21 @@ class Albums extends Component {
   }
 
   handlePageLimitChange = event => {
-    this.props.history.push(
-      `${this.props.match.path}?limit=${event.target.value}`
+    this.pushToHistory(
+      queryString.parse(this.props.location.search).start,
+      event.target.value
     )
   }
 
   handleNextButtonClick = () => {
     const queryValues = queryString.parse(this.props.location.search)
-    const start = queryValues.start
-    const limit = queryValues.limit
-    const nextStart = Number(start) + Number(limit)
+    const nextStart = Number(queryValues.start) + Number(queryValues.limit)
+    this.pushToHistory(nextStart, queryValues.limit)
+  }
+
+  pushToHistory(start = 0, limit = 20) {
     this.props.history.push(
-      `${this.props.match.path}?start=${nextStart}&limit=${limit}`
+      `${this.props.match.path}?start=${start}&limit=${limit}`
     )
   }
 

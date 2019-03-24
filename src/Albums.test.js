@@ -53,7 +53,7 @@ it('fetches albums on mount', () => {
   )
 })
 
-it('sets start query param in url upon clicking next', () => {
+it('sets start and keeps limit params in url upon clicking next', () => {
   const push = jest.fn()
   const props = {
     ...defaultProps,
@@ -71,7 +71,7 @@ it('sets start query param in url upon clicking next', () => {
   expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
 })
 
-it('sets limit query param in url upon selecting a limit', () => {
+it('sets limit and keeps start params in url upon selecting a limit', () => {
   const push = jest.fn()
   const props = {
     ...defaultProps,
@@ -86,7 +86,7 @@ it('sets limit query param in url upon selecting a limit', () => {
     .find('select')
     .simulate('change', { target: { value: 30 } })
 
-  expect(push).toHaveBeenCalledWith('/albums?limit=30')
+  expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
 })
 
 it('displays grid items on mount', async () => {
