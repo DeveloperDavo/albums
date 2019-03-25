@@ -8,6 +8,7 @@ import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
+import EmptyResponseMessage from './EmptyResponseMessage';
 
 import './Albums.css'
 import './Error.css'
@@ -18,7 +19,8 @@ class Albums extends Component {
     this.state = {
       albums: [],
       hasError: false,
-      loading: false
+      loading: false,
+      isEmpty: false
     }
   }
 
@@ -31,8 +33,16 @@ class Albums extends Component {
           `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
         )
         .then(response => {
-          this.setState({ albums: response.data, hasError: false })
-          this.setState({ loading: false })
+          if (response.data.length === 0) {
+            this.setState({ isEmpty: true })
+          } else {
+            this.setState({ isEmpty: false })
+          }
+          this.setState({
+            albums: response.data,
+            hasError: false,
+            loading: false
+          })
         })
         .catch(error => this.setState({ hasError: true }))
     }
@@ -73,11 +83,25 @@ class Albums extends Component {
     this.getAlbums()
   }
 
-  render() {
+  renderAlbumGrid = () => {
     const gridItems = this.state.albums.map(album => (
       <GridItem key={album.id} title={album.title} userId={album.userId} />
     ))
 
+    if (this.state.loading) {
+      return (
+        <ReactLoading
+          className="Albums__loading"
+          type={'spokes'}
+          color={'black'}
+        />
+      )
+    } else {
+      return <div className="Grid">{gridItems}</div>
+    }
+  }
+
+  render() {
     const { start, limit } = queryString.parse(this.props.location.search)
     if (isNaN(start) || isNaN(limit)) {
       return <Redirect to="/albums?start=0&limit=20" />
@@ -85,22 +109,16 @@ class Albums extends Component {
 
     if (this.state.hasError) {
       return <Error />
+    } else if (this.state.isEmpty) {
+      return <EmptyResponseMessage />
     } else {
       return (
         <>
           <PageLimitSelect onChange={this.handlePageLimitChange} />
-          {this.state.loading ? (
-            <ReactLoading
-              className="Albums__loading"
-              type={'spokes'}
-              color={'black'}
-            />
-          ) : (
-            <div className="Grid">{gridItems}</div>
-          )}
+          {this.renderAlbumGrid()}
           <Pagination
             onPreviousClick={this.handlePreviousButtonClick}
-            previousIsHidden={(start - limit) < 0}
+            previousIsHidden={start - limit < 0}
             onNextClick={this.handleNextButtonClick}
           />
         </>

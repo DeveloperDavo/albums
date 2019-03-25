@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 import ReactLoading from 'react-loading'
 
@@ -9,6 +9,7 @@ import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
+import EmptyResponseMessage from './EmptyResponseMessage';
 
 jest.mock('axios')
 
@@ -113,7 +114,7 @@ it('hides previous button if start would be below 0', () => {
     ...defaultProps,
     location: {
       search: '?start=0&limit=30'
-    },
+    }
   }
   const wrapper = shallow(<Albums {...props} />)
 
@@ -152,7 +153,6 @@ it('fetches albums on query param change', async () => {
   }
   const wrapper = shallow(<Albums {...prevProps} />)
 
-  expect(wrapper.find(Error)).toHaveLength(0)
   const props = {
     ...defaultProps,
     location: {
@@ -250,6 +250,15 @@ it('does not display error after successful fetch', async () => {
   expect(wrapper.find(Error)).toHaveLength(0)
 })
 
+it('does not display empty response message after successful fetch', async () => {
+  const wrapper = await shallow(<Albums {...defaultProps} />)
+  wrapper.setState({ isEmpty: true })
+
+  await wrapper.instance().getAlbums()
+
+  expect(wrapper.find(Link)).toHaveLength(0)
+})
+
 it('redirects if start is not a number', async () => {
   const props = {
     ...defaultProps,
@@ -308,4 +317,11 @@ it('does not fetch if limit is not a number', () => {
   const wrapper = shallow(<Albums {...props} />)
 
   expect(axios.get).not.toHaveBeenCalled()
+})
+
+it('displays link back to albums when the response is empty', async () => {
+  axios.get.mockResolvedValue({ data: [] })
+  const wrapper = await shallow(<Albums {...defaultProps} />)
+
+  expect(wrapper.find(EmptyResponseMessage).dive().find(Link).props().to).toBe('/albums')
 })
