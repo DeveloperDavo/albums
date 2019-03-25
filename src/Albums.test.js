@@ -236,6 +236,18 @@ it('redirects if limit is not a number', async () => {
   expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
 })
 
+it('redirects if there are no query params', async () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: ''
+    }
+  }
+  const wrapper = await shallow(<Albums {...props} />)
+
+  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+})
+
 it('does not fetch if start is not a number', () => {
   const props = {
     ...defaultProps,
