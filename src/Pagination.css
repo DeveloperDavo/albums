@@ -12,3 +12,7 @@
 .Pagination__btn img {
   height: 2rem;
 }
+
+.hidden {
+  visibility: hidden;
+}

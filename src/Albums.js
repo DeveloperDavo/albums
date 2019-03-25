@@ -100,6 +100,7 @@ class Albums extends Component {
           )}
           <Pagination
             onPreviousClick={this.handlePreviousButtonClick}
+            previousIsHidden={(start - limit) < 0}
             onNextClick={this.handleNextButtonClick}
           />
         </>
