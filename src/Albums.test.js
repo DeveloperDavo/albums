@@ -118,7 +118,7 @@ it('fetches albums on query param change', async () => {
     ...defaultProps,
     location: {
       search: '?start=20&limit=20'
-    },
+    }
   }
   const wrapper = shallow(<Albums {...prevProps} />)
 
@@ -127,7 +127,7 @@ it('fetches albums on query param change', async () => {
     ...defaultProps,
     location: {
       search: '?start=40&limit=20'
-    },
+    }
   }
   await wrapper.setProps(props)
 
@@ -140,7 +140,6 @@ it('fetches albums on query param change', async () => {
     'https://jsonplaceholder.typicode.com/albums?_start=40&_limit=20'
   )
 })
-
 
 it('displays grid items on mount', async () => {
   const wrapper = await shallow(<Albums {...defaultProps} />)
