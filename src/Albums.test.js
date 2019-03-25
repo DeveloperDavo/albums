@@ -113,6 +113,35 @@ it('sets limit and keeps start params in url upon selecting a limit', () => {
   expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
 })
 
+it('fetches albums on query param change', async () => {
+  const prevProps = {
+    ...defaultProps,
+    location: {
+      search: '?start=20&limit=20'
+    },
+  }
+  const wrapper = shallow(<Albums {...prevProps} />)
+
+  expect(wrapper.find(Error)).toHaveLength(0)
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?start=40&limit=20'
+    },
+  }
+  await wrapper.setProps(props)
+
+  expect(axios.get).toHaveBeenNthCalledWith(
+    1,
+    'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=20'
+  )
+  expect(axios.get).toHaveBeenNthCalledWith(
+    2,
+    'https://jsonplaceholder.typicode.com/albums?_start=40&_limit=20'
+  )
+})
+
+
 it('displays grid items on mount', async () => {
   const wrapper = await shallow(<Albums {...defaultProps} />)
 

@@ -58,10 +58,7 @@ class Albums extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      this.props.location.search !== prevProps.location.search ||
-      this.state.pageStart !== prevState.pageStart
-    ) {
+    if (this.props.location.search !== prevProps.location.search) {
       this.getAlbums()
     }
   }
