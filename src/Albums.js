@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import queryString from 'query-string'
+import { Redirect } from 'react-router-dom'
 
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
@@ -23,12 +24,14 @@ class Albums extends Component {
     const queryValues = queryString.parse(this.props.location.search)
     const start = queryValues.start
     const limit = queryValues.limit
-    axios
-      .get(
-        `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
-      )
-      .then(response => this.setState({ albums: response.data }))
-      .catch(error => this.setState({ hasError: true }))
+    if (!isNaN(start) && !isNaN(limit)) {
+      axios
+        .get(
+          `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
+        )
+        .then(response => this.setState({ albums: response.data }))
+        .catch(error => this.setState({ hasError: true }))
+    }
   }
 
   handlePageLimitChange = event => {
@@ -73,6 +76,14 @@ class Albums extends Component {
     const gridItems = this.state.albums.map(album => (
       <GridItem key={album.id} title={album.title} userId={album.userId} />
     ))
+
+    const queryValues = queryString.parse(this.props.location.search)
+    const start = queryValues.start
+    const limit = queryValues.limit
+
+    if (isNaN(start) || isNaN(limit)) {
+      return <Redirect to="/albums?start=0&limit=20" />
+    }
 
     return (
       <div className="Albums">

@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 import Albums from './Albums'
@@ -170,10 +171,59 @@ it('does not display any errors', async () => {
 
   expect(wrapper.find(Error)).toHaveLength(0)
 })
+
 it('displays error if fetch fails', async () => {
   axios.get.mockRejectedValue(new Error())
 
   const wrapper = await await shallow(<Albums {...defaultProps} />)
 
   expect(wrapper.find(Error)).toHaveLength(1)
+})
+
+it('redirects if start is not a number', async () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?start=NaN&limit=30'
+    }
+  }
+  const wrapper = await shallow(<Albums {...props} />)
+
+  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+})
+
+it('redirects if limit is not a number', async () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?start=50&limit=undefined'
+    }
+  }
+  const wrapper = await shallow(<Albums {...props} />)
+
+  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+})
+
+it('does not fetch if start is not a number', () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?start=50&limit=undefined'
+    }
+  }
+  shallow(<Albums {...props} />)
+
+  expect(axios.get).not.toHaveBeenCalled()
+})
+
+it('does not fetch if limit is not a number', () => {
+  const props = {
+    ...defaultProps,
+    location: {
+      search: '?start=50&limit=undefined'
+    }
+  }
+  const wrapper = shallow(<Albums {...props} />)
+
+  expect(axios.get).not.toHaveBeenCalled()
 })
