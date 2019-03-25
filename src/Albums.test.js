@@ -177,6 +177,9 @@ it('displays error if fetch fails', async () => {
 
   const wrapper = await await shallow(<Albums {...defaultProps} />)
 
+  expect(wrapper.find(Pagination)).toHaveLength(0)
+  expect(wrapper.find(PageLimitSelect)).toHaveLength(0)
+  expect(wrapper.find('.Grid')).toHaveLength(0)
   expect(wrapper.find(Error)).toHaveLength(1)
 })
 

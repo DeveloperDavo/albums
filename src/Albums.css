@@ -1,7 +1,3 @@
-.Albums {
-  background-color: lightgrey;
-}
-
 .Grid {
   display: flex;
   flex-wrap: wrap;

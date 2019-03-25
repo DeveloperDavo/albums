@@ -81,17 +81,19 @@ class Albums extends Component {
     }
 
     return (
-      <div className="Albums">
-        <PageLimitSelect onChange={this.handlePageLimitChange} />
+      <div>
         {!this.state.hasError ? (
-          <div className="Grid">{gridItems}</div>
+          <>
+            <PageLimitSelect onChange={this.handlePageLimitChange} />
+            <div className="Grid">{gridItems}</div>
+            <Pagination
+              onPreviousClick={this.handlePreviousButtonClick}
+              onNextClick={this.handleNextButtonClick}
+            />
+          </>
         ) : (
           <Error />
         )}
-        <Pagination
-          onPreviousClick={this.handlePreviousButtonClick}
-          onNextClick={this.handleNextButtonClick}
-        />
       </div>
     )
   }
