@@ -21,9 +21,7 @@ class Albums extends Component {
   }
 
   getAlbums = () => {
-    const queryValues = queryString.parse(this.props.location.search)
-    const start = queryValues.start
-    const limit = queryValues.limit
+    const { start, limit } = queryString.parse(this.props.location.search)
     if (!isNaN(start) && !isNaN(limit)) {
       axios
         .get(
@@ -42,15 +40,15 @@ class Albums extends Component {
   }
 
   handleNextButtonClick = () => {
-    const queryValues = queryString.parse(this.props.location.search)
-    const nextStart = Number(queryValues.start) + Number(queryValues.limit)
-    this.pushToHistory(nextStart, queryValues.limit)
+    const { start, limit } = queryString.parse(this.props.location.search)
+    const nextStart = Number(start) + Number(limit)
+    this.pushToHistory(nextStart, limit)
   }
 
   handlePreviousButtonClick = () => {
-    const queryValues = queryString.parse(this.props.location.search)
-    const previousStart = Number(queryValues.start) - Number(queryValues.limit)
-    this.pushToHistory(previousStart, queryValues.limit)
+    const { start, limit } = queryString.parse(this.props.location.search)
+    const previousStart = Number(start) - Number(limit)
+    this.pushToHistory(previousStart, limit)
   }
 
   pushToHistory(start = 0, limit = 20) {
@@ -77,10 +75,7 @@ class Albums extends Component {
       <GridItem key={album.id} title={album.title} userId={album.userId} />
     ))
 
-    const queryValues = queryString.parse(this.props.location.search)
-    const start = queryValues.start
-    const limit = queryValues.limit
-
+    const { start, limit } = queryString.parse(this.props.location.search)
     if (isNaN(start) || isNaN(limit)) {
       return <Redirect to="/albums?start=0&limit=20" />
     }
