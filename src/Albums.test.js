@@ -212,6 +212,15 @@ it('displays error if fetch fails', async () => {
   expect(wrapper.find(Error)).toHaveLength(1)
 })
 
+it('does not display error after successful fetch', async () => {
+  const wrapper = await shallow(<Albums {...defaultProps} />)
+  wrapper.setState({ hasError: true })
+
+  await wrapper.instance().getAlbums()
+
+  expect(wrapper.find(Error)).toHaveLength(0)
+})
+
 it('redirects if start is not a number', async () => {
   const props = {
     ...defaultProps,

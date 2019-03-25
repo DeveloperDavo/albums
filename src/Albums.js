@@ -27,7 +27,7 @@ class Albums extends Component {
         .get(
           `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
         )
-        .then(response => this.setState({ albums: response.data }))
+        .then(response => this.setState({ albums: response.data, hasError: false }))
         .catch(error => this.setState({ hasError: true }))
     }
   }
