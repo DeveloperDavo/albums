@@ -235,10 +235,19 @@ it('displays error if fetch fails', async () => {
 
   const wrapper = await await shallow(<Albums {...defaultProps} />)
 
+  expect(wrapper.find(Error)).toHaveLength(1)
+})
+
+it('only displays error', () => {
+  const wrapper = shallow(<Albums {...defaultProps} />)
+  wrapper.setState({hasError: true, loading: true, isEmpty: true, albums: data})
+
+  expect(wrapper.find(Error)).toHaveLength(1)
+  expect(wrapper.find(EmptyResponseMessage)).toHaveLength(0)
+  expect(wrapper.find(ReactLoading)).toHaveLength(0)
   expect(wrapper.find(Pagination)).toHaveLength(0)
   expect(wrapper.find(PageLimitSelect)).toHaveLength(0)
   expect(wrapper.find('.Grid')).toHaveLength(0)
-  expect(wrapper.find(Error)).toHaveLength(1)
 })
 
 it('does not display error after successful fetch', async () => {
@@ -324,4 +333,16 @@ it('displays link back to albums when the response is empty', async () => {
   const wrapper = await shallow(<Albums {...defaultProps} />)
 
   expect(wrapper.find(EmptyResponseMessage).dive().find(Link).props().to).toBe('/albums')
+})
+
+it('only displays empty response message', () => {
+  const wrapper = shallow(<Albums {...defaultProps} />)
+  wrapper.setState({hasError: false, loading: true, isEmpty: true, albums: data})
+
+  expect(wrapper.find(EmptyResponseMessage)).toHaveLength(1)
+  expect(wrapper.find(Error)).toHaveLength(0)
+  expect(wrapper.find(ReactLoading)).toHaveLength(0)
+  expect(wrapper.find(Pagination)).toHaveLength(0)
+  expect(wrapper.find(PageLimitSelect)).toHaveLength(0)
+  expect(wrapper.find('.Grid')).toHaveLength(0)
 })
