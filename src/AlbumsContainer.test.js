@@ -4,12 +4,12 @@ import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 import ReactLoading from 'react-loading'
 
-import Albums from './Albums'
+import AlbumsContainer from './AlbumsContainer'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
-import EmptyResponseMessage from './EmptyResponseMessage';
+import EmptyResponseMessage from './EmptyResponseMessage'
 
 jest.mock('axios')
 
@@ -50,7 +50,7 @@ it('fetches albums on mount', () => {
     },
     match: { path: '/albums' }
   }
-  shallow(<Albums {...props} />)
+  shallow(<AlbumsContainer {...props} />)
 
   expect(axios.get).toHaveBeenCalledWith(
     'https://jsonplaceholder.typicode.com/albums?_start=60&_limit=30'
@@ -58,13 +58,13 @@ it('fetches albums on mount', () => {
 })
 
 it('displays loading before fetching', () => {
-  const wrapper = shallow(<Albums {...defaultProps} />)
+  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(wrapper.find(ReactLoading)).toHaveLength(1)
 })
 
 it('does not display loading after fetching', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(wrapper.find(ReactLoading)).toHaveLength(0)
 })
@@ -79,7 +79,7 @@ it('sets start and keeps limit params in url upon clicking next', () => {
     history: { push },
     match: { path: '/albums' }
   }
-  const wrapper = shallow(<Albums {...props} />)
+  const wrapper = shallow(<AlbumsContainer {...props} />)
 
   wrapper
     .find(Pagination)
@@ -98,7 +98,7 @@ it('sets start and keeps limit params in url upon clicking previous', () => {
     history: { push },
     match: { path: '/albums' }
   }
-  const wrapper = shallow(<Albums {...props} />)
+  const wrapper = shallow(<AlbumsContainer {...props} />)
 
   wrapper
     .find(Pagination)
@@ -116,7 +116,7 @@ it('hides previous button if start would be below 0', () => {
       search: '?start=0&limit=30'
     }
   }
-  const wrapper = shallow(<Albums {...props} />)
+  const wrapper = shallow(<AlbumsContainer {...props} />)
 
   const prevBtn = wrapper
     .find(Pagination)
@@ -133,7 +133,7 @@ it('sets limit and keeps start params in url upon selecting a limit', () => {
     history: { push },
     match: { path: '/albums' }
   }
-  const wrapper = shallow(<Albums {...props} />)
+  const wrapper = shallow(<AlbumsContainer {...props} />)
 
   wrapper
     .find(PageLimitSelect)
@@ -151,7 +151,7 @@ it('fetches albums on query param change', async () => {
       search: '?start=20&limit=20'
     }
   }
-  const wrapper = shallow(<Albums {...prevProps} />)
+  const wrapper = shallow(<AlbumsContainer {...prevProps} />)
 
   const props = {
     ...defaultProps,
@@ -172,13 +172,13 @@ it('fetches albums on query param change', async () => {
 })
 
 it('displays grid items on mount', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(wrapper.find(GridItem)).toHaveLength(data.length)
 })
 
 it('renders grid item with album id as key', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(
     wrapper
@@ -189,7 +189,7 @@ it('renders grid item with album id as key', async () => {
 })
 
 it('displays grid item with album title and user id', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(
@@ -207,7 +207,7 @@ it('displays grid item with album title and user id', async () => {
 })
 
 it('displays grid item with album cover image', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
   expect(
@@ -225,7 +225,7 @@ it('displays grid item with album cover image', async () => {
 })
 
 it('does not display any errors', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(wrapper.find(Error)).toHaveLength(0)
 })
@@ -233,14 +233,19 @@ it('does not display any errors', async () => {
 it('displays error if fetch fails', async () => {
   axios.get.mockRejectedValue(new Error())
 
-  const wrapper = await await shallow(<Albums {...defaultProps} />)
+  const wrapper = await await shallow(<AlbumsContainer {...defaultProps} />)
 
   expect(wrapper.find(Error)).toHaveLength(1)
 })
 
 it('only displays error', () => {
-  const wrapper = shallow(<Albums {...defaultProps} />)
-  wrapper.setState({hasError: true, loading: true, isEmpty: true, albums: data})
+  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
+  wrapper.setState({
+    hasError: true,
+    loading: true,
+    isEmpty: true,
+    albums: data
+  })
 
   expect(wrapper.find(Error)).toHaveLength(1)
   expect(wrapper.find(EmptyResponseMessage)).toHaveLength(0)
@@ -251,7 +256,7 @@ it('only displays error', () => {
 })
 
 it('does not display error after successful fetch', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
   wrapper.setState({ hasError: true })
 
   await wrapper.instance().getAlbums()
@@ -260,7 +265,7 @@ it('does not display error after successful fetch', async () => {
 })
 
 it('does not display empty response message after successful fetch', async () => {
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
   wrapper.setState({ isEmpty: true })
 
   await wrapper.instance().getAlbums()
@@ -275,7 +280,7 @@ it('redirects if start is not a number', async () => {
       search: '?start=NaN&limit=30'
     }
   }
-  const wrapper = await shallow(<Albums {...props} />)
+  const wrapper = await shallow(<AlbumsContainer {...props} />)
 
   expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
 })
@@ -287,7 +292,7 @@ it('redirects if limit is not a number', async () => {
       search: '?start=50&limit=undefined'
     }
   }
-  const wrapper = await shallow(<Albums {...props} />)
+  const wrapper = await shallow(<AlbumsContainer {...props} />)
 
   expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
 })
@@ -299,7 +304,7 @@ it('redirects if there are no query params', async () => {
       search: ''
     }
   }
-  const wrapper = await shallow(<Albums {...props} />)
+  const wrapper = await shallow(<AlbumsContainer {...props} />)
 
   expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
 })
@@ -311,7 +316,7 @@ it('does not fetch if start is not a number', () => {
       search: '?start=50&limit=undefined'
     }
   }
-  shallow(<Albums {...props} />)
+  shallow(<AlbumsContainer {...props} />)
 
   expect(axios.get).not.toHaveBeenCalled()
 })
@@ -323,21 +328,32 @@ it('does not fetch if limit is not a number', () => {
       search: '?start=50&limit=undefined'
     }
   }
-  const wrapper = shallow(<Albums {...props} />)
+  const wrapper = shallow(<AlbumsContainer {...props} />)
 
   expect(axios.get).not.toHaveBeenCalled()
 })
 
 it('displays link back to albums when the response is empty', async () => {
   axios.get.mockResolvedValue({ data: [] })
-  const wrapper = await shallow(<Albums {...defaultProps} />)
+  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
-  expect(wrapper.find(EmptyResponseMessage).dive().find(Link).props().to).toBe('/albums')
+  expect(
+    wrapper
+      .find(EmptyResponseMessage)
+      .dive()
+      .find(Link)
+      .props().to
+  ).toBe('/albums')
 })
 
 it('only displays empty response message', () => {
-  const wrapper = shallow(<Albums {...defaultProps} />)
-  wrapper.setState({hasError: false, loading: true, isEmpty: true, albums: data})
+  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
+  wrapper.setState({
+    hasError: false,
+    loading: true,
+    isEmpty: true,
+    albums: data
+  })
 
   expect(wrapper.find(EmptyResponseMessage)).toHaveLength(1)
   expect(wrapper.find(Error)).toHaveLength(0)

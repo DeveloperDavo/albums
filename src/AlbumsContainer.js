@@ -8,12 +8,12 @@ import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
-import EmptyResponseMessage from './EmptyResponseMessage';
+import EmptyResponseMessage from './EmptyResponseMessage'
 
-import './Albums.css'
+import './AlbumsContainer.css'
 import './Error.css'
 
-class Albums extends Component {
+class AlbumsContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -127,4 +127,4 @@ class Albums extends Component {
   }
 }
 
-export default Albums
+export default AlbumsContainer
