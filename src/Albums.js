@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
+import ReactLoading from 'react-loading'
 
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
@@ -16,20 +17,23 @@ class Albums extends Component {
     super(props)
     this.state = {
       albums: [],
-      hasError: false
+      hasError: false,
+      loading: false
     }
   }
 
   getAlbums = () => {
     const { start, limit } = queryString.parse(this.props.location.search)
     if (!isNaN(start) && !isNaN(limit)) {
+      this.setState({ loading: true })
       axios
         .get(
           `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
         )
-        .then(response =>
+        .then(response => {
           this.setState({ albums: response.data, hasError: false })
-        )
+          this.setState({ loading: false })
+        })
         .catch(error => this.setState({ hasError: true }))
     }
   }
@@ -79,22 +83,28 @@ class Albums extends Component {
       return <Redirect to="/albums?start=0&limit=20" />
     }
 
-    return (
-      <div>
-        {!this.state.hasError ? (
-          <>
-            <PageLimitSelect onChange={this.handlePageLimitChange} />
-            <div className="Grid">{gridItems}</div>
-            <Pagination
-              onPreviousClick={this.handlePreviousButtonClick}
-              onNextClick={this.handleNextButtonClick}
+    if (this.state.hasError) {
+      return <Error />
+    } else {
+      return (
+        <>
+          <PageLimitSelect onChange={this.handlePageLimitChange} />
+          {this.state.loading ? (
+            <ReactLoading
+              className="Albums__loading"
+              type={'spokes'}
+              color={'black'}
             />
-          </>
-        ) : (
-          <Error />
-        )}
-      </div>
-    )
+          ) : (
+            <div className="Grid">{gridItems}</div>
+          )}
+          <Pagination
+            onPreviousClick={this.handlePreviousButtonClick}
+            onNextClick={this.handleNextButtonClick}
+          />
+        </>
+      )
+    }
   }
 }
 

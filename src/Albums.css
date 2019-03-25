@@ -1,3 +1,8 @@
+.Albums__loading {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 .Grid {
   display: flex;
   flex-wrap: wrap;

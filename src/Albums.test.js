@@ -2,6 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import ReactLoading from 'react-loading'
 
 import Albums from './Albums'
 import GridItem from './GridItem'
@@ -53,6 +54,18 @@ it('fetches albums on mount', () => {
   expect(axios.get).toHaveBeenCalledWith(
     'https://jsonplaceholder.typicode.com/albums?_start=60&_limit=30'
   )
+})
+
+it('displays loading before fetching', () => {
+  const wrapper = shallow(<Albums {...defaultProps} />)
+
+  expect(wrapper.find(ReactLoading)).toHaveLength(1)
+})
+
+it('does not display loading after fetching', async () => {
+  const wrapper = await shallow(<Albums {...defaultProps} />)
+
+  expect(wrapper.find(ReactLoading)).toHaveLength(0)
 })
 
 it('sets start and keeps limit params in url upon clicking next', () => {
