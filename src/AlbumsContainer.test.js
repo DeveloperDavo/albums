@@ -5,6 +5,7 @@ import axios from 'axios'
 import ReactLoading from 'react-loading'
 
 import AlbumsContainer from './AlbumsContainer'
+import Albums from './Albums'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
@@ -60,7 +61,12 @@ it('fetches albums on mount', () => {
 it('displays loading before fetching', () => {
   const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
-  expect(wrapper.find(ReactLoading)).toHaveLength(1)
+  expect(
+    wrapper
+      .find(Albums)
+      .dive()
+      .find(ReactLoading)
+  ).toHaveLength(1)
 })
 
 it('does not display loading after fetching', async () => {
@@ -174,7 +180,12 @@ it('fetches albums on query param change', async () => {
 it('displays grid items on mount', async () => {
   const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
-  expect(wrapper.find(GridItem)).toHaveLength(data.length)
+  expect(
+    wrapper
+      .find(Albums)
+      .dive()
+      .find(GridItem)
+  ).toHaveLength(data.length)
 })
 
 it('renders grid item with album id as key', async () => {
@@ -182,6 +193,8 @@ it('renders grid item with album id as key', async () => {
 
   expect(
     wrapper
+      .find(Albums)
+      .dive()
       .find(GridItem)
       .at(0)
       .key()
@@ -191,7 +204,11 @@ it('renders grid item with album id as key', async () => {
 it('displays grid item with album title and user id', async () => {
   const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
-  const gridItem = wrapper.find(GridItem).at(0)
+  const gridItem = wrapper
+    .find(Albums)
+    .dive()
+    .find(GridItem)
+    .at(0)
   expect(
     gridItem
       .dive()
@@ -218,19 +235,16 @@ it('displays grid item with album cover image', async () => {
 
   const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
-  const gridItem = wrapper.find(GridItem).at(0)
-  expect(
-    gridItem
-      .dive()
-      .find('img')
-      .props().src
-  ).toBe('https://via.placeholder.com/150/004ba0')
-  expect(
-    gridItem
-      .dive()
-      .find('img')
-      .props().alt
-  ).toBe(data[0].title)
+  const imgProps = wrapper
+    .find(Albums)
+    .dive()
+    .find(GridItem)
+    .at(0)
+    .dive()
+    .find('img')
+    .props()
+  expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
+  expect(imgProps.alt).toBe(data[0].title)
 })
 
 it('does not display any errors', async () => {

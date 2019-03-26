@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
-import ReactLoading from 'react-loading'
 
-import GridItem from './GridItem'
+import Albums from './Albums'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
@@ -83,25 +82,8 @@ class AlbumsContainer extends Component {
     this.getAlbums()
   }
 
-  renderAlbumGrid = () => {
-    const gridItems = this.state.albums.map(album => (
-      <GridItem key={album.id} title={album.title} userId={album.userId} />
-    ))
-
-    if (this.state.loading) {
-      return (
-        <ReactLoading
-          className="Albums__loading"
-          type={'spokes'}
-          color={'black'}
-        />
-      )
-    } else {
-      return <div className="Grid">{gridItems}</div>
-    }
-  }
-
   render() {
+    const { loading, albums } = this.state
     const { start, limit } = queryString.parse(this.props.location.search)
     if (isNaN(start) || isNaN(limit)) {
       return <Redirect to="/albums?start=0&limit=20" />
@@ -115,7 +97,7 @@ class AlbumsContainer extends Component {
       return (
         <>
           <PageLimitSelect onChange={this.handlePageLimitChange} />
-          {this.renderAlbumGrid()}
+          <Albums loading={loading} albums={albums} />
           <Pagination
             onPreviousClick={this.handlePreviousButtonClick}
             previousIsHidden={start - limit < 0}
