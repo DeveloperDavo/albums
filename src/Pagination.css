@@ -5,12 +5,16 @@
 }
 
 .Pagination__btn {
-  padding: 1rem;
-  background-color: white;
+  margin: 1rem;
+  padding: 0.5rem;
+  background: #a7a3db;
+  border: #291bc0 solid 3px;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }
 
 .Pagination__btn img {
-  height: 2rem;
+  height: 1rem;
 }
 
 .hidden {
