@@ -90,6 +90,7 @@ it('sets start and keeps limit params in url upon clicking next', () => {
 
   wrapper
     .find(Pagination)
+    .at(0)
     .dive()
     .find('.Pagination__btn')
     .at(0)
@@ -109,6 +110,7 @@ it('sets start and keeps limit params in url upon clicking previous', () => {
 
   wrapper
     .find(Pagination)
+    .at(1)
     .dive()
     .find('.Pagination__btn')
     .at(1)
@@ -127,6 +129,7 @@ it('hides previous button if start would be below 0', () => {
 
   const prevBtn = wrapper
     .find(Pagination)
+    .at(1)
     .dive()
     .find('.Pagination__btn')
     .at(0)

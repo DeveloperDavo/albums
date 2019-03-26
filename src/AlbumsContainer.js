@@ -82,8 +82,19 @@ class AlbumsContainer extends Component {
     this.getAlbums()
   }
 
+  renderPagination(start, limit) {
+    return (
+      <Pagination
+        onPreviousClick={this.handlePreviousButtonClick}
+        previousIsHidden={start - limit < 0}
+        onNextClick={this.handleNextButtonClick}
+      />
+    )
+  }
+
   render() {
     const { loading, albums } = this.state
+
     const { start, limit } = queryString.parse(this.props.location.search)
     if (isNaN(start) || isNaN(limit)) {
       return <RedirectToAlbumStart />
@@ -97,12 +108,9 @@ class AlbumsContainer extends Component {
       return (
         <>
           <PageLimitSelect onChange={this.handlePageLimitChange} />
+          {this.renderPagination(start, limit)}
           <Albums loading={loading} albums={albums} />
-          <Pagination
-            onPreviousClick={this.handlePreviousButtonClick}
-            previousIsHidden={start - limit < 0}
-            onNextClick={this.handleNextButtonClick}
-          />
+          {this.renderPagination(start, limit)}
         </>
       )
     }
