@@ -20,8 +20,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "yarn test && yarn build",
+    "deploy": "yarn test:ci && yarn build",
     "test": "react-scripts test --verbose=false",
+    "test:ci": "CI=true yarn test",
     "eject": "react-scripts eject",
     "format": "prettier --write src/**/*.js"
   },
