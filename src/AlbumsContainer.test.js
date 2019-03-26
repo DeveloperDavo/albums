@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import ReactLoading from 'react-loading'
 
@@ -11,6 +11,7 @@ import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
+import RedirectToAlbumStart from './RedirectToAlbumStart'
 
 jest.mock('axios')
 
@@ -305,7 +306,7 @@ it('redirects if start is not a number', async () => {
   }
   const wrapper = await shallow(<AlbumsContainer {...props} />)
 
-  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
 })
 
 it('redirects if limit is not a number', async () => {
@@ -317,7 +318,7 @@ it('redirects if limit is not a number', async () => {
   }
   const wrapper = await shallow(<AlbumsContainer {...props} />)
 
-  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
 })
 
 it('redirects if there are no query params', async () => {
@@ -329,7 +330,7 @@ it('redirects if there are no query params', async () => {
   }
   const wrapper = await shallow(<AlbumsContainer {...props} />)
 
-  expect(wrapper.find(Redirect).props().to).toBe('/albums?start=0&limit=20')
+  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
 })
 
 it('does not fetch if start is not a number', () => {

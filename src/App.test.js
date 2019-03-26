@@ -7,12 +7,12 @@ import App from './App.js'
 describe('App', () => {
   it('renders Redirect in last Route', () => {
     const wrapper = shallow(<App />)
-    const Redirect = wrapper
+    const component = wrapper
       .find(Route)
       .last()
       .props()
-      .render()
+      .component()
 
-    expect(Redirect.props.to).toBe('/albums?start=0&limit=20')
+    expect(component.props.to).toBe('/albums?start=0&limit=20')
   })
 })

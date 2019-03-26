@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import queryString from 'query-string'
-import { Redirect } from 'react-router-dom'
 
 import Albums from './Albums'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
+import RedirectToAlbumStart from './RedirectToAlbumStart'
 
 import './AlbumsContainer.css'
 import './Error.css'
@@ -86,7 +86,7 @@ class AlbumsContainer extends Component {
     const { loading, albums } = this.state
     const { start, limit } = queryString.parse(this.props.location.search)
     if (isNaN(start) || isNaN(limit)) {
-      return <Redirect to="/albums?start=0&limit=20" />
+      return <RedirectToAlbumStart />
     }
 
     if (this.state.hasError) {
