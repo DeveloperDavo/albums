@@ -21,8 +21,8 @@ export default function GridItem(props) {
   return (
     <div className="GridItem">
       <img src={`https://via.placeholder.com/150/${color}`} alt={title} />
-      <p className="GridItem__title">{title}</p>
       <p className="GridItem__userId">{userId}</p>
+      <p className="GridItem__title">{title}</p>
     </div>
   )
 }
