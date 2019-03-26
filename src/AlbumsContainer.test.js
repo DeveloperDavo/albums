@@ -207,6 +207,15 @@ it('displays grid item with album title and user id', async () => {
 })
 
 it('displays grid item with album cover image', async () => {
+  const data = [
+    {
+      userId: 23,
+      id: 1,
+      title: 'quidem molestiae enim'
+    }
+  ]
+  axios.get.mockResolvedValue({ data })
+
   const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
   const gridItem = wrapper.find(GridItem).at(0)
@@ -215,7 +224,7 @@ it('displays grid item with album cover image', async () => {
       .dive()
       .find('img')
       .props().src
-  ).toBe('https://via.placeholder.com/150/00ff')
+  ).toBe('https://via.placeholder.com/150/004ba0')
   expect(
     gridItem
       .dive()
