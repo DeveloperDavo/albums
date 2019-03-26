@@ -5,7 +5,7 @@
 - Start `yarn start`
 - Test `yarn test`
 
-## Deployment
+## Prod build with Docker
 
 - Build `yarn build`
 - Start `docker-compose up`
