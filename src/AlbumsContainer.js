@@ -106,11 +106,11 @@ class AlbumsContainer extends Component {
       return <EmptyResponseMessage />
     } else {
       return (
-        <>
+        <div className="AlbumsContainer">
           <PageLimitSelect onChange={this.handlePageLimitChange} />
           <Albums loading={loading} albums={albums} />
           {this.renderPagination(start, limit)}
-        </>
+        </div>
       )
     }
   }
