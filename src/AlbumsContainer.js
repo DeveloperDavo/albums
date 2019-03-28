@@ -108,7 +108,6 @@ class AlbumsContainer extends Component {
       return (
         <>
           <PageLimitSelect onChange={this.handlePageLimitChange} />
-          {this.renderPagination(start, limit)}
           <Albums loading={loading} albums={albums} />
           {this.renderPagination(start, limit)}
         </>

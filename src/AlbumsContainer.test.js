@@ -81,64 +81,63 @@ it('does not display loading after fetching', async () => {
   ).toHaveLength(0)
 })
 
-it('sets start and keeps limit params in url upon clicking next', () => {
-  const push = jest.fn()
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=60&limit=30'
-    },
-    history: { push },
-    match: { path: '/albums' }
-  }
-  const wrapper = shallow(<AlbumsContainer {...props} />)
-
-  wrapper
-    .find(Pagination)
-    .at(0)
-    .dive()
-    .find('.Pagination__btn')
-    .at(0)
-    .simulate('click')
-
-  expect(push).toHaveBeenCalledWith('/albums?start=30&limit=30')
-})
-
-it('sets start and keeps limit params in url upon clicking previous', () => {
-  const push = jest.fn()
-  const props = {
-    ...defaultProps,
-    history: { push },
-    match: { path: '/albums' }
-  }
-  const wrapper = shallow(<AlbumsContainer {...props} />)
-
-  wrapper
-    .find(Pagination)
-    .at(1)
-    .dive()
-    .find('.Pagination__btn')
-    .at(1)
-    .simulate('click')
-  expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
-})
-
-it('hides previous button if start would be below 0', () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=0&limit=30'
+describe('pagination', () => {
+  it('sets start and keeps limit params in url upon clicking next', () => {
+    const push = jest.fn()
+    const props = {
+      ...defaultProps,
+      location: {
+        search: '?start=60&limit=30'
+      },
+      history: { push },
+      match: { path: '/albums' }
     }
-  }
-  const wrapper = shallow(<AlbumsContainer {...props} />)
+    const wrapper = shallow(<AlbumsContainer {...props} />)
 
-  const prevBtn = wrapper
-    .find(Pagination)
-    .at(1)
-    .dive()
-    .find('.Pagination__btn')
-    .at(0)
-  expect(prevBtn.props().className).toContain('hidden')
+    wrapper
+      .find(Pagination)
+      .dive()
+      .find('.Pagination__btn')
+      .at(0)
+      .simulate('click')
+
+    expect(push).toHaveBeenCalledWith('/albums?start=30&limit=30')
+  })
+
+  it('sets start and keeps limit params in url upon clicking previous', () => {
+    const push = jest.fn()
+    const props = {
+      ...defaultProps,
+      history: { push },
+      match: { path: '/albums' }
+    }
+    const wrapper = shallow(<AlbumsContainer {...props} />)
+
+    wrapper
+      .find(Pagination)
+      .dive()
+      .find('.Pagination__btn')
+      .at(1)
+      .simulate('click')
+    expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
+  })
+
+  it('hides previous button if start would be below 0', () => {
+    const props = {
+      ...defaultProps,
+      location: {
+        search: '?start=0&limit=30'
+      }
+    }
+    const wrapper = shallow(<AlbumsContainer {...props} />)
+
+    const prevBtn = wrapper
+      .find(Pagination)
+      .dive()
+      .find('.Pagination__btn')
+      .at(0)
+    expect(prevBtn.props().className).toContain('hidden')
+  })
 })
 
 it('sets limit and keeps start params in url upon selecting a limit', () => {
