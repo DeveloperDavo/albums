@@ -73,7 +73,12 @@ it('displays loading before fetching', () => {
 it('does not display loading after fetching', async () => {
   const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
 
-  expect(wrapper.find(ReactLoading)).toHaveLength(0)
+  expect(
+    wrapper
+      .find(Albums)
+      .dive()
+      .find(ReactLoading)
+  ).toHaveLength(0)
 })
 
 it('sets start and keeps limit params in url upon clicking next', () => {
