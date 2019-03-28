@@ -4,5 +4,7 @@
 }
 
 .PageLimitSelect select {
+  background: #291bc0;
   cursor: pointer;
+  color: white;
 }
