@@ -3,12 +3,12 @@
   margin: 0 auto;
 }
 
-.Albums__loading {
+.loading {
   margin: 0 auto;
   padding: 1rem;
 }
 
-.Grid {
+.Albums {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
