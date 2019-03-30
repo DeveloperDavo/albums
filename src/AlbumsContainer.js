@@ -105,7 +105,10 @@ export default class AlbumsContainer extends React.Component {
     } else {
       return (
         <div className="AlbumsContainer">
-          <PageLimitSelect onChange={this.handlePageLimitChange} />
+          <PageLimitSelect
+            location={this.props.location}
+            onChange={this.handlePageLimitChange}
+          />
           <Albums loading={loading} albums={albums} />
           {this.renderPagination(start, limit)}
         </div>

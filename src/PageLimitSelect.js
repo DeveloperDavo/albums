@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 
 import './PageLimitSelect.css'
 
@@ -11,14 +12,22 @@ export default function PageLimitSelect(props) {
       </option>
     )
   })
+
+  const { limit } = queryString.parse(props.location.search)
+
   return (
     <div className="PageLimitSelect">
       <label>Number of albums per page: </label>
-      <select onChange={props.onChange}>{options}</select>
+      <select value={Number(limit)} onChange={props.onChange}>
+        {options}
+      </select>
     </div>
   )
 }
 
 PageLimitSelect.propTypes = {
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired
+  }).isRequired,
   onChange: PropTypes.func.isRequired
 }

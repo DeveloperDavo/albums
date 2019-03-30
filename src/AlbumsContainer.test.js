@@ -161,6 +161,24 @@ describe('PageLimitSelect', () => {
 
     expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
   })
+
+  it('renders current limit from url', () => {
+    const props = {
+      ...defaultProps,
+      location: {
+        search: '?start=20&limit=30'
+      }
+    }
+    const wrapper = shallow(<AlbumsContainer {...props} />)
+
+    expect(
+      wrapper
+        .find(PageLimitSelect)
+        .dive()
+        .find('select')
+        .props().value
+    ).toBe(30)
+  })
 })
 
 it('fetches albums on query param change', async () => {
