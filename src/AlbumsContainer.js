@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import queryString from 'query-string'
 
@@ -12,7 +13,7 @@ import RedirectToAlbumStart from './RedirectToAlbumStart'
 import './AlbumsContainer.css'
 import './Error.css'
 
-class AlbumsContainer extends React.Component {
+export default class AlbumsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -116,4 +117,14 @@ class AlbumsContainer extends React.Component {
   }
 }
 
-export default AlbumsContainer
+AlbumsContainer.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired
+  }).isRequired
+}
