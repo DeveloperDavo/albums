@@ -49,10 +49,7 @@ export default class AlbumsContainer extends React.Component {
   }
 
   handlePageLimitChange = event => {
-    this.pushToHistory(
-      queryString.parse(this.props.location.search).start,
-      event.target.value
-    )
+    this.pushToHistory(0, event.target.value)
   }
 
   handleNextButtonClick = () => {

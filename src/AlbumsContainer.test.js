@@ -140,22 +140,27 @@ describe('pagination', () => {
   })
 })
 
-it('sets limit and keeps start params in url upon selecting a limit', () => {
-  const push = jest.fn()
-  const props = {
-    ...defaultProps,
-    history: { push },
-    match: { path: '/albums' }
-  }
-  const wrapper = shallow(<AlbumsContainer {...props} />)
+describe('PageLimitSelect', () => {
+  it('sets limit and resets start upon selecting a limit', () => {
+    const push = jest.fn()
+    const props = {
+      ...defaultProps,
+      location: {
+        search: '?start=20&limit=20'
+      },
+      history: { push },
+      match: { path: '/albums' }
+    }
+    const wrapper = shallow(<AlbumsContainer {...props} />)
 
-  wrapper
-    .find(PageLimitSelect)
-    .dive()
-    .find('select')
-    .simulate('change', { target: { value: 30 } })
+    wrapper
+      .find(PageLimitSelect)
+      .dive()
+      .find('select')
+      .simulate('change', { target: { value: 30 } })
 
-  expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
+    expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
+  })
 })
 
 it('fetches albums on query param change', async () => {
