@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import axios from 'axios'
 import queryString from 'query-string'
 
@@ -12,7 +12,7 @@ import RedirectToAlbumStart from './RedirectToAlbumStart'
 import './AlbumsContainer.css'
 import './Error.css'
 
-class AlbumsContainer extends Component {
+class AlbumsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
