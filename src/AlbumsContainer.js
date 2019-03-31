@@ -28,33 +28,33 @@ export function AlbumsContainer(props) {
     location
   } = props
 
+  if (error) {
+    return <Error />
+  } else if (empty) {
+    return <EmptyResponseMessage />
+  }
+
   const { start, limit } = queryString.parse(location.search)
   if (isNaN(start) || isNaN(limit)) {
     return <RedirectToAlbumStart />
   }
 
-  if (error) {
-    return <Error />
-  } else if (empty) {
-    return <EmptyResponseMessage />
-  } else {
-    return (
-      <div className="Container">
-        <PageLimitSelect location={location} onChange={handlePageLimitChange} />
-        <Albums
-          albums={items}
-          history={history}
-          loading={loading}
-          location={location}
-        />
-        <Pagination
-          onPreviousClick={handlePreviousClick}
-          previousIsHidden={start - limit < 0}
-          onNextClick={handleNextClick}
-        />
-      </div>
-    )
-  }
+  return (
+    <div className="Container">
+      <PageLimitSelect location={location} onChange={handlePageLimitChange} />
+      <Albums
+        albums={items}
+        history={history}
+        loading={loading}
+        location={location}
+      />
+      <Pagination
+        onPreviousClick={handlePreviousClick}
+        previousIsHidden={start - limit < 0}
+        onNextClick={handleNextClick}
+      />
+    </div>
+  )
 }
 
 export default withItemFetcher(

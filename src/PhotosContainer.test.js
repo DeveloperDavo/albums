@@ -1,12 +1,15 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import ReactLoading from 'react-loading'
+import { Link } from 'react-router-dom'
 
 import { PhotosContainer } from './PhotosContainer'
 import Photos from './Photos'
 import PhotoGridItem from './PhotoGridItem'
 import Pagination from './Pagination'
 import PageLimitSelect from './PageLimitSelect'
+import Error from './Error'
+import EmptyResponseMessage from './EmptyResponseMessage'
 
 const data = [
   {
@@ -26,6 +29,8 @@ const data = [
 ]
 
 const defaultProps = {
+  empty: false,
+  error: false,
   handlePageLimitChange: jest.fn(),
   handlePreviousClick: jest.fn(),
   handleNextClick: jest.fn(),
@@ -210,6 +215,50 @@ describe('PhotosContainer', () => {
           .find('select')
           .props().value
       ).toBe(30)
+    })
+  })
+
+  describe('Error', () => {
+    it('does not render error if there is not one', () => {
+      const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+
+      expect(wrapper.find(Error).length).toBe(0)
+    })
+
+    it('renders error and only error if there is one', () => {
+      const wrapper = shallow(<PhotosContainer {...defaultProps} error />)
+
+      expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find(Photos).length).toBe(0)
+      expect(wrapper.find(Error).length).toBe(1)
+    })
+  })
+
+  describe('EmptyResponseMessage', () => {
+    it('does not render empty response when there is not one', () => {
+      const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+
+      expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
+    })
+
+    it('renders link and only link back to albums when the response is empty', () => {
+      const wrapper = shallow(<PhotosContainer {...defaultProps} empty />)
+
+      expect(wrapper.find(Error).length).toBe(0)
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find('.Grid').length).toBe(0)
+      expect(
+        wrapper
+          .find(EmptyResponseMessage)
+          .dive()
+          .find(Link)
+          .props().to
+      ).toBe('/albums')
     })
   })
 })

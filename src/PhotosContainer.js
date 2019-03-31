@@ -5,6 +5,8 @@ import queryString from 'query-string'
 import Photos from './Photos'
 import Pagination from './Pagination'
 import PageLimitSelect from './PageLimitSelect'
+import Error from './Error'
+import EmptyResponseMessage from './EmptyResponseMessage'
 
 import withItemFetcher from './withItemFetcher'
 import withPaginationClickHandlers from './withPaginationClickHandlers'
@@ -13,6 +15,8 @@ import { fetchPhotos } from './api/placeHolderClient'
 
 export function PhotosContainer(props) {
   const {
+    empty,
+    error,
     handleNextClick,
     handlePageLimitChange,
     handlePreviousClick,
@@ -20,6 +24,13 @@ export function PhotosContainer(props) {
     loading,
     location
   } = props
+
+  if (error) {
+    return <Error />
+  } else if (empty) {
+    return <EmptyResponseMessage />
+  }
+
   const { start, limit } = queryString.parse(location.search)
   return (
     <div className="Container">
@@ -40,6 +51,8 @@ export default withItemFetcher(
 )
 
 PhotosContainer.propTypes = {
+  empty: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
   handleNextClick: PropTypes.func.isRequired,
   handlePageLimitChange: PropTypes.func.isRequired,
   handlePreviousClick: PropTypes.func.isRequired,
