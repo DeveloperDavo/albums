@@ -19,3 +19,9 @@ body {
   color: rgba(0, 0, 0, 0.8);
   background-color: #f7f7f7;
 }
+
+.Grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

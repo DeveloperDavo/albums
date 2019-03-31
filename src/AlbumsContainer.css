@@ -8,12 +8,6 @@
   padding: 1rem;
 }
 
-.Albums {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 .EmptyResponseMessage {
   text-align: center;
 }

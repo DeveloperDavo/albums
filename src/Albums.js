@@ -14,7 +14,7 @@ export default function Albums(props) {
   return loading ? (
     <ReactLoading className="loading" type={'spokes'} color={'black'} />
   ) : (
-    <div className="Albums">{gridItems}</div>
+    <div className="Grid">{gridItems}</div>
   )
 }
 
