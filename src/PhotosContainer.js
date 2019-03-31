@@ -18,7 +18,7 @@ export function PhotosContainer(props) {
   } = props
   const { start, limit } = queryString.parse(location.search)
   return (
-    <div>
+    <div className="Container">
       <Photos photos={items} loading={loading} />
       <Pagination
         onPreviousClick={handlePreviousClick}

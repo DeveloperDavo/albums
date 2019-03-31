@@ -13,7 +13,6 @@ import withPaginationClickHandlers from './withPaginationClickHandlers'
 import withItemFetcher from './withItemFetcher'
 import { fetchAlbums } from './api/placeHolderClient'
 
-import './AlbumsContainer.css'
 import './Error.css'
 
 export function AlbumsContainer(props) {
@@ -39,7 +38,7 @@ export function AlbumsContainer(props) {
     return <EmptyResponseMessage />
   } else {
     return (
-      <div className="AlbumsContainer">
+      <div className="Container">
         <PageLimitSelect location={location} onChange={handlePageLimitChange} />
         <Albums loading={loading} albums={items} />
         <Pagination

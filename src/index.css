@@ -20,6 +20,20 @@ body {
   background-color: #f7f7f7;
 }
 
+.Container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.loading {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.EmptyResponseMessage {
+  text-align: center;
+}
+
 .Grid {
   display: flex;
   flex-wrap: wrap;
