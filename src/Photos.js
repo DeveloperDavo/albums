@@ -7,7 +7,11 @@ export default function Photos(props) {
   const { photos } = props
 
   const gridItems = photos.map(photo => (
-    <PhotoGridItem key={photo.id} title={photo.title} userId={photo.userId} />
+    <PhotoGridItem
+      key={photo.id}
+      title={photo.title}
+      thumbnailUrl={photo.thumbnailUrl}
+    />
   ))
 
   return <div className="Grid">{gridItems}</div>

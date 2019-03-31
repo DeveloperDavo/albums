@@ -40,7 +40,7 @@ describe('PhotosContainer', () => {
     })
 
     describe('PhotoGridItem', () => {
-      it('renders photo with photo id as key', () => {
+      it('renders photo grid item with photo id as key', () => {
         const wrapper = shallow(<PhotosContainer {...defaultProps} />)
 
         expect(
@@ -53,7 +53,7 @@ describe('PhotosContainer', () => {
         ).toBe(data[0].id.toString())
       })
 
-      it('renders photo with photo title', () => {
+      it('renders photo grid item with photo title', () => {
         const wrapper = shallow(<PhotosContainer {...defaultProps} />)
 
         expect(
@@ -66,6 +66,21 @@ describe('PhotosContainer', () => {
             .find('.GridItem__title')
             .text()
         ).toBe(data[0].title)
+      })
+
+      it('renders photo grid item with thumbnail', () => {
+        const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+        const imgProps = wrapper
+          .find(Photos)
+          .dive()
+          .find(PhotoGridItem)
+          .at(0)
+          .dive()
+          .find('img')
+          .props()
+
+        expect(imgProps.src).toBe('https://via.placeholder.com/150/250289')
+        expect(imgProps.alt).toBe(data[0].title)
       })
     })
   })
