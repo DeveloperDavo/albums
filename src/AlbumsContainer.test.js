@@ -38,7 +38,9 @@ const defaultProps = {
   match: {
     path: '/path'
   },
-  handlePageLimitChange: jest.fn()
+  handlePageLimitChange: jest.fn(),
+  handlePreviousClick: jest.fn(),
+  handleNextClick: jest.fn()
 }
 
 beforeEach(() => {
@@ -82,16 +84,16 @@ it('does not display loading after fetching', async () => {
   ).toHaveLength(0)
 })
 
-describe('pagination', () => {
-  it('sets start and keeps limit params in url upon clicking next', () => {
-    const push = jest.fn()
+describe('Pagination', () => {
+  it('handle previous button click', () => {
+    const handlePreviousClick = jest.fn()
     const props = {
       ...defaultProps,
       location: {
         search: '?start=60&limit=30'
       },
-      history: { push },
-      match: { path: '/albums' }
+      match: { path: '/albums' },
+      handlePreviousClick
     }
     const wrapper = shallow(<AlbumsContainer {...props} />)
 
@@ -102,15 +104,15 @@ describe('pagination', () => {
       .at(0)
       .simulate('click')
 
-    expect(push).toHaveBeenCalledWith('/albums?start=30&limit=30')
+    expect(handlePreviousClick).toHaveBeenCalled()
   })
 
-  it('sets start and keeps limit params in url upon clicking previous', () => {
-    const push = jest.fn()
+  it('handles next button click', () => {
+    const handleNextClick = jest.fn()
     const props = {
       ...defaultProps,
-      history: { push },
-      match: { path: '/albums' }
+      match: { path: '/albums' },
+      handleNextClick
     }
     const wrapper = shallow(<AlbumsContainer {...props} />)
 
@@ -120,7 +122,8 @@ describe('pagination', () => {
       .find('.Pagination__btn')
       .at(1)
       .simulate('click')
-    expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
+
+    expect(handleNextClick).toHaveBeenCalled()
   })
 
   it('hides previous button if start would be below 0', () => {

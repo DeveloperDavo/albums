@@ -9,10 +9,11 @@ import Pagination from './Pagination'
 import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
 import RedirectToAlbumStart from './RedirectToAlbumStart'
+import withPageLimitChangeHandler from './withPageLimitChangeHandler'
+import withPaginationClickHandlers from './withPaginationClickHandlers'
 
 import './AlbumsContainer.css'
 import './Error.css'
-import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 
 export class AlbumsContainer extends React.Component {
   constructor(props) {
@@ -49,24 +50,6 @@ export class AlbumsContainer extends React.Component {
     }
   }
 
-  handleNextButtonClick = () => {
-    const { start, limit } = queryString.parse(this.props.location.search)
-    const nextStart = Number(start) + Number(limit)
-    this.pushToHistory(nextStart, limit)
-  }
-
-  handlePreviousButtonClick = () => {
-    const { start, limit } = queryString.parse(this.props.location.search)
-    const previousStart = Number(start) - Number(limit)
-    this.pushToHistory(previousStart, limit)
-  }
-
-  pushToHistory(start = 0, limit = 20) {
-    this.props.history.push(
-      `${this.props.match.path}?start=${start}&limit=${limit}`
-    )
-  }
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.location.search !== prevProps.location.search) {
       this.getAlbums()
@@ -80,9 +63,9 @@ export class AlbumsContainer extends React.Component {
   renderPagination(start, limit) {
     return (
       <Pagination
-        onPreviousClick={this.handlePreviousButtonClick}
+        onPreviousClick={this.props.handlePreviousClick}
         previousIsHidden={start - limit < 0}
-        onNextClick={this.handleNextButtonClick}
+        onNextClick={this.props.handleNextClick}
       />
     )
   }
@@ -114,10 +97,14 @@ export class AlbumsContainer extends React.Component {
   }
 }
 
-export default withPageLimitChangeHandler(AlbumsContainer)
+export default withPaginationClickHandlers(
+  withPageLimitChangeHandler(AlbumsContainer)
+)
 
 AlbumsContainer.propTypes = {
   handlePageLimitChange: PropTypes.func.isRequired,
+  handlePreviousClick: PropTypes.func.isRequired,
+  handleNextClick: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
