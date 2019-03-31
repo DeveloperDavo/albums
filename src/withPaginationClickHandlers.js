@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
-import pushToHistory from './pushToHistory'
+import pushToHistory from './util/pushToHistory'
 
 export default function withPaginationClickHandlers(WrappedComponent) {
   return function(props) {

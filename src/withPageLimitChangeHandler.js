@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import pushToHistory from './pushToHistory'
+import pushToHistory from './util/pushToHistory'
 
 export default function withPageLimitChangeHandler(WrappedComponent) {
   return function(props) {
