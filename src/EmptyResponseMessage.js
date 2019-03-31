@@ -6,7 +6,7 @@ export default function EmptyResponseMessage() {
     <p className="EmptyResponseMessage">
       Nothing to see here. Return to
       <span>&nbsp;</span>
-      <Link to="/albums">first page</Link>
+      <Link to="/albums">albums</Link>
     </p>
   )
 }
