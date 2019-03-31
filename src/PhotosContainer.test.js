@@ -52,6 +52,21 @@ describe('PhotosContainer', () => {
             .key()
         ).toBe(data[0].id.toString())
       })
+
+      it('renders photo with photo title', () => {
+        const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+
+        expect(
+          wrapper
+            .find(Photos)
+            .dive()
+            .find(PhotoGridItem)
+            .at(0)
+            .dive()
+            .find('.GridItem__title')
+            .text()
+        ).toBe(data[0].title)
+      })
     })
   })
 })

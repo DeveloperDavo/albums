@@ -1,5 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-export default function PhotoGridItem() {
-  return <p>Photo grid item</p>
+import './GridItem.css'
+
+export default function PhotoGridItem(props) {
+  const { title } = props
+  return (
+    <div className="GridItem">
+      <p className="GridItem__title">{title}</p>
+    </div>
+  )
+}
+
+PhotoGridItem.propTypes = {
+  title: PropTypes.string.isRequired
 }
