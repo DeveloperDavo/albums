@@ -19,7 +19,7 @@ export default function withItemFetcher(WrappedComponent, fetchItems) {
       const { start, limit } = queryString.parse(location.search)
       if (!isNaN(start) && !isNaN(limit)) {
         this.setState({ loading: true, empty: false, error: false, items: [] })
-        fetchItems(start, limit)
+        fetchItems(this.props)
           .then(response => {
             if (response.data.length === 0) this.setState({ empty: true })
             this.setState({

@@ -47,7 +47,7 @@ describe('withItemFetcher', () => {
     }
     const wrapper = await shallow(<WrappedTestComponent {...props} />)
 
-    expect(fetchItemsMock).toHaveBeenCalledWith('60', '30')
+    expect(fetchItemsMock).toHaveBeenCalledWith(props)
     expect(wrapper.find(TestComponent).props().items).toEqual(data)
   })
 
@@ -78,8 +78,8 @@ describe('withItemFetcher', () => {
     }
     await wrapper.setProps(props)
 
-    expect(fetchItemsMock).toHaveBeenNthCalledWith(1, '20', '20')
-    expect(fetchItemsMock).toHaveBeenNthCalledWith(2, '40', '20')
+    expect(fetchItemsMock).toHaveBeenNthCalledWith(1, prevProps)
+    expect(fetchItemsMock).toHaveBeenNthCalledWith(2, props)
   })
 
   it('sets loading state to true before fetching', () => {

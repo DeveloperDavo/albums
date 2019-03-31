@@ -19,9 +19,14 @@ describe('placeHolderClient', () => {
         title: 'sunt qui excepturi placeat culpa'
       }
     ]
+    const props = {
+      location: {
+        search: '?start=20&limit=30'
+      }
+    }
 
     axios.get.mockReturnValue(data)
-    const albums = fetchAlbums(20, 30)
+    const albums = fetchAlbums(props)
 
     expect(axios.get).toHaveBeenCalledWith(
       'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=30'
@@ -47,9 +52,19 @@ describe('placeHolderClient', () => {
         thumbnailUrl: 'https://via.placeholder.com/150/6a0f83'
       }
     ]
+    const props = {
+      location: {
+        search: '?start=20&limit=30'
+      },
+      match: {
+        params: {
+          albumId: 5
+        }
+      }
+    }
 
     axios.get.mockReturnValue(data)
-    const photos = fetchPhotos(20, 30, 5)
+    const photos = fetchPhotos(props)
 
     expect(axios.get).toHaveBeenCalledWith(
       'https://jsonplaceholder.typicode.com/photos?albumId=5&_start=20&_limit=30'
