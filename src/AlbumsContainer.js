@@ -12,8 +12,9 @@ import RedirectToAlbumStart from './RedirectToAlbumStart'
 
 import './AlbumsContainer.css'
 import './Error.css'
+import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 
-export default class AlbumsContainer extends React.Component {
+export class AlbumsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -46,10 +47,6 @@ export default class AlbumsContainer extends React.Component {
         })
         .catch(error => this.setState({ hasError: true }))
     }
-  }
-
-  handlePageLimitChange = event => {
-    this.pushToHistory(0, event.target.value)
   }
 
   handleNextButtonClick = () => {
@@ -107,7 +104,7 @@ export default class AlbumsContainer extends React.Component {
         <div className="AlbumsContainer">
           <PageLimitSelect
             location={this.props.location}
-            onChange={this.handlePageLimitChange}
+            onChange={this.props.handlePageLimitChange}
           />
           <Albums loading={loading} albums={albums} />
           {this.renderPagination(start, limit)}
@@ -117,7 +114,10 @@ export default class AlbumsContainer extends React.Component {
   }
 }
 
+export default withPageLimitChangeHandler(AlbumsContainer)
+
 AlbumsContainer.propTypes = {
+  handlePageLimitChange: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,

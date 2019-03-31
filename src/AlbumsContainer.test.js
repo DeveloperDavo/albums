@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import ReactLoading from 'react-loading'
 
-import AlbumsContainer from './AlbumsContainer'
+import { AlbumsContainer } from './AlbumsContainer'
 import Albums from './Albums'
 import GridItem from './GridItem'
 import PageLimitSelect from './PageLimitSelect'
@@ -37,7 +37,8 @@ const defaultProps = {
   },
   match: {
     path: '/path'
-  }
+  },
+  handlePageLimitChange: jest.fn()
 }
 
 beforeEach(() => {
@@ -141,25 +142,22 @@ describe('pagination', () => {
 })
 
 describe('PageLimitSelect', () => {
-  it('sets limit and resets start upon selecting a limit', () => {
-    const push = jest.fn()
+  it('handles page limit change', () => {
+    const handlePageLimitChange = jest.fn()
     const props = {
       ...defaultProps,
-      location: {
-        search: '?start=20&limit=20'
-      },
-      history: { push },
-      match: { path: '/albums' }
+      handlePageLimitChange
     }
     const wrapper = shallow(<AlbumsContainer {...props} />)
 
+    const event = { target: { value: 30 } }
     wrapper
       .find(PageLimitSelect)
       .dive()
       .find('select')
-      .simulate('change', { target: { value: 30 } })
+      .simulate('change', event)
 
-    expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
+    expect(handlePageLimitChange).toHaveBeenCalledWith(event)
   })
 
   it('renders current limit from url', () => {
