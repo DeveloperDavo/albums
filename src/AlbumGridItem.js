@@ -15,7 +15,7 @@ const colors = [
   'ffff66'
 ]
 
-export default function GridItem(props) {
+export default function AlbumGridItem(props) {
   const { title, userId } = props
   const color = colors[userId % 10]
   return (
@@ -27,7 +27,7 @@ export default function GridItem(props) {
   )
 }
 
-GridItem.propTypes = {
+AlbumGridItem.propTypes = {
   title: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired
 }

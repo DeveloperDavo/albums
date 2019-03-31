@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import GridItem from './GridItem'
+import AlbumGridItem from './AlbumGridItem'
 import ReactLoading from 'react-loading'
 
 export default function Albums(props) {
   const { albums, loading } = props
 
   const gridItems = albums.map(album => (
-    <GridItem key={album.id} title={album.title} userId={album.userId} />
+    <AlbumGridItem key={album.id} title={album.title} userId={album.userId} />
   ))
 
   return loading ? (

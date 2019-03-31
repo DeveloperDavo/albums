@@ -1,12 +1,11 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import ReactLoading from 'react-loading'
 
 import { AlbumsContainer } from './AlbumsContainer'
 import Albums from './Albums'
-import GridItem from './GridItem'
+import AlbumGridItem from './AlbumGridItem'
 import PageLimitSelect from './PageLimitSelect'
 import Pagination from './Pagination'
 import Error from './Error'
@@ -48,7 +47,7 @@ describe('AlbumsContainer', () => {
         wrapper
           .find(Albums)
           .dive()
-          .find(GridItem).length
+          .find(AlbumGridItem).length
       ).toBe(data.length)
     })
 
@@ -59,7 +58,7 @@ describe('AlbumsContainer', () => {
         wrapper
           .find(Albums)
           .dive()
-          .find(GridItem)
+          .find(AlbumGridItem)
           .at(0)
           .key()
       ).toBe(data[0].id.toString())
@@ -71,7 +70,7 @@ describe('AlbumsContainer', () => {
       const gridItem = wrapper
         .find(Albums)
         .dive()
-        .find(GridItem)
+        .find(AlbumGridItem)
         .at(0)
       expect(
         gridItem
@@ -103,7 +102,7 @@ describe('AlbumsContainer', () => {
       const imgProps = wrapper
         .find(Albums)
         .dive()
-        .find(GridItem)
+        .find(AlbumGridItem)
         .at(0)
         .dive()
         .find('img')
