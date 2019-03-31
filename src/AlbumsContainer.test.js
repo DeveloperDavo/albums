@@ -106,10 +106,8 @@ describe('AlbumsContainer', () => {
         .dive()
         .find(AlbumGridItem)
         .at(0)
-
-      gridItem
         .dive()
-        .find('img')
+        .find('.GridItem')
         .simulate('click')
 
       expect(push).toHaveBeenCalledWith('/albums/1?start=0&limit=20')

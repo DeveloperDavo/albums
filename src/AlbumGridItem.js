@@ -28,13 +28,8 @@ export default function AlbumGridItem(props) {
   const { title, userId } = props
   const color = colors[userId % 10]
   return (
-    <div className="GridItem">
-      <img
-        className="AlbumGridItem__img"
-        src={`https://via.placeholder.com/150/${color}`}
-        alt={title}
-        onClick={handleClick}
-      />
+    <div className="AlbumGridItem GridItem" onClick={handleClick}>
+      <img src={`https://via.placeholder.com/150/${color}`} alt={title} />
       <p className="GridItem__title">{title}</p>
     </div>
   )
