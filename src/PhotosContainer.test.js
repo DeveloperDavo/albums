@@ -10,6 +10,7 @@ import Pagination from './Pagination'
 import PageLimitSelect from './PageLimitSelect'
 import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
+import RedirectToAlbumStart from './RedirectToAlbumStart'
 
 const data = [
   {
@@ -259,6 +260,44 @@ describe('PhotosContainer', () => {
           .find(Link)
           .props().to
       ).toBe('/albums')
+    })
+  })
+
+  describe('RedirectToAlbumStart', () => {
+    it('redirects if start is not a number', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=NaN&limit=30'
+        }
+      }
+      const wrapper = shallow(<PhotosContainer {...props} />)
+
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+    })
+
+    it('redirects if limit is not a number', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=50&limit=undefined'
+        }
+      }
+      const wrapper = shallow(<PhotosContainer {...props} />)
+
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+    })
+
+    it('redirects if there are no query params', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: ''
+        }
+      }
+      const wrapper = shallow(<PhotosContainer {...props} />)
+
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
     })
   })
 })

@@ -7,6 +7,7 @@ import Pagination from './Pagination'
 import PageLimitSelect from './PageLimitSelect'
 import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
+import RedirectToAlbumStart from './RedirectToAlbumStart'
 
 import withItemFetcher from './withItemFetcher'
 import withPaginationClickHandlers from './withPaginationClickHandlers'
@@ -32,6 +33,10 @@ export function PhotosContainer(props) {
   }
 
   const { start, limit } = queryString.parse(location.search)
+  if (isNaN(start) || isNaN(limit)) {
+    return <RedirectToAlbumStart />
+  }
+
   return (
     <div className="Container">
       <PageLimitSelect location={location} onChange={handlePageLimitChange} />
