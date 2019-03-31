@@ -15,7 +15,7 @@ describe('withPaginationClickHandlers', () => {
         search: '?start=60&limit=30'
       },
       history: { push },
-      match: { path: '/albums' }
+      match: { url: '/albums' }
     }
     const wrapper = shallow(<WrappedTestComponent {...props} />)
 
@@ -31,7 +31,7 @@ describe('withPaginationClickHandlers', () => {
       location: {
         search: '?start=0&limit=20'
       },
-      match: { path: '/albums' }
+      match: { url: '/albums' }
     }
     const wrapper = shallow(<WrappedTestComponent {...props} />)
 

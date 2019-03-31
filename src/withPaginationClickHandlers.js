@@ -37,6 +37,6 @@ withPaginationClickHandlers.propTypes = {
     search: PropTypes.string.isRequired
   }).isRequired,
   match: PropTypes.shape({
-    path: PropTypes.string.isRequired
+    url: PropTypes.string.isRequired
   }).isRequired
 }

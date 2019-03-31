@@ -19,7 +19,7 @@ const defaultProps = {
     search: '?start=0&limit=20'
   },
   match: {
-    path: '/path'
+    url: '/url'
   }
 }
 

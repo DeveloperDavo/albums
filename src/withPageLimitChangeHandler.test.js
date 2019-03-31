@@ -16,7 +16,7 @@ describe('withPageLimitChangeHandler', () => {
         search: '?start=20&limit=20'
       },
       history: { push },
-      match: { path: '/albums' }
+      match: { url: '/albums' }
     }
 
     const wrapper = shallow(<WrappedTestComponent {...props} />)
