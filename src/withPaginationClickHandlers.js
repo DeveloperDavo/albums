@@ -10,13 +10,13 @@ export default function withPaginationClickHandlers(WrappedComponent) {
     function handlePreviousClick() {
       const { start, limit } = queryString.parse(props.location.search)
       const previousStart = Number(start) - Number(limit)
-      pushToHistory(history, match, previousStart, limit)
+      pushToHistory(history, match.url, previousStart, limit)
     }
 
     function handleNextClick() {
       const { start, limit } = queryString.parse(props.location.search)
       const nextStart = Number(start) + Number(limit)
-      pushToHistory(history, match, nextStart, limit)
+      pushToHistory(history, match.url, nextStart, limit)
     }
 
     return (

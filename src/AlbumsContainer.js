@@ -22,6 +22,7 @@ export function AlbumsContainer(props) {
     handlePageLimitChange,
     handlePreviousClick,
     handleNextClick,
+    history,
     items,
     loading,
     location
@@ -40,7 +41,12 @@ export function AlbumsContainer(props) {
     return (
       <div className="Container">
         <PageLimitSelect location={location} onChange={handlePageLimitChange} />
-        <Albums loading={loading} albums={items} />
+        <Albums
+          albums={items}
+          history={history}
+          loading={loading}
+          location={location}
+        />
         <Pagination
           onPreviousClick={handlePreviousClick}
           previousIsHidden={start - limit < 0}

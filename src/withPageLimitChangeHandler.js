@@ -7,7 +7,7 @@ export default function withPageLimitChangeHandler(WrappedComponent) {
   return function(props) {
     function handlePageLimitChange(event) {
       const { history, match } = props
-      pushToHistory(history, match, 0, event.target.value)
+      pushToHistory(history, match.url, 0, event.target.value)
     }
 
     return (

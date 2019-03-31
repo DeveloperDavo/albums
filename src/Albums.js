@@ -5,10 +5,17 @@ import AlbumGridItem from './AlbumGridItem'
 import ReactLoading from 'react-loading'
 
 export default function Albums(props) {
-  const { albums, loading } = props
+  const { albums, history, loading, location } = props
 
   const gridItems = albums.map(album => (
-    <AlbumGridItem key={album.id} title={album.title} userId={album.userId} />
+    <AlbumGridItem
+      key={album.id}
+      history={history}
+      id={album.id}
+      location={location}
+      title={album.title}
+      userId={album.userId}
+    />
   ))
 
   return loading ? (

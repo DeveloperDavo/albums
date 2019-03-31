@@ -6,6 +6,7 @@ import { PhotosContainer } from './PhotosContainer'
 import Photos from './Photos'
 import PhotoGridItem from './PhotoGridItem'
 import Pagination from './Pagination'
+import PageLimitSelect from './PageLimitSelect'
 
 const data = [
   {
@@ -171,6 +172,44 @@ describe('PhotosContainer', () => {
         .find('.Pagination__btn')
         .at(0)
       expect(prevBtn.props().className).toContain('hidden')
+    })
+  })
+
+  describe('PageLimitSelect', () => {
+    it('handles page limit change', () => {
+      const handlePageLimitChange = jest.fn()
+      const props = {
+        ...defaultProps,
+        handlePageLimitChange
+      }
+      const wrapper = shallow(<PhotosContainer {...props} />)
+
+      const event = { target: { value: 30 } }
+      wrapper
+        .find(PageLimitSelect)
+        .dive()
+        .find('select')
+        .simulate('change', event)
+
+      expect(handlePageLimitChange).toHaveBeenCalledWith(event)
+    })
+
+    it('renders current limit from url', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=20&limit=30'
+        }
+      }
+      const wrapper = shallow(<PhotosContainer {...props} />)
+
+      expect(
+        wrapper
+          .find(PageLimitSelect)
+          .dive()
+          .find('select')
+          .props().value
+      ).toBe(30)
     })
   })
 })

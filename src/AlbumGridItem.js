@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
+import pushToHistory from './util/pushToHistory'
+
 import './GridItem.css'
+import './AlbumGridItem.css'
 
 const colors = [
   '000000',
@@ -16,11 +20,21 @@ const colors = [
 ]
 
 export default function AlbumGridItem(props) {
+  function handleClick() {
+    const { history, id } = props
+    const url = '/albums/' + id
+    pushToHistory(history, url)
+  }
   const { title, userId } = props
   const color = colors[userId % 10]
   return (
     <div className="GridItem">
-      <img src={`https://via.placeholder.com/150/${color}`} alt={title} />
+      <img
+        className="AlbumGridItem__img"
+        src={`https://via.placeholder.com/150/${color}`}
+        alt={title}
+        onClick={handleClick}
+      />
       <p className="GridItem__userId">{userId}</p>
       <p className="GridItem__title">{title}</p>
     </div>
@@ -28,6 +42,10 @@ export default function AlbumGridItem(props) {
 }
 
 AlbumGridItem.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired
 }

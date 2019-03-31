@@ -4,13 +4,17 @@ import queryString from 'query-string'
 
 import Photos from './Photos'
 import Pagination from './Pagination'
+import PageLimitSelect from './PageLimitSelect'
+
 import withItemFetcher from './withItemFetcher'
 import withPaginationClickHandlers from './withPaginationClickHandlers'
+import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 import { fetchPhotos } from './api/placeHolderClient'
 
 export function PhotosContainer(props) {
   const {
     handleNextClick,
+    handlePageLimitChange,
     handlePreviousClick,
     items,
     loading,
@@ -19,6 +23,7 @@ export function PhotosContainer(props) {
   const { start, limit } = queryString.parse(location.search)
   return (
     <div className="Container">
+      <PageLimitSelect location={location} onChange={handlePageLimitChange} />
       <Photos photos={items} loading={loading} />
       <Pagination
         onPreviousClick={handlePreviousClick}
@@ -30,13 +35,14 @@ export function PhotosContainer(props) {
 }
 
 export default withItemFetcher(
-  withPaginationClickHandlers(PhotosContainer),
+  withPaginationClickHandlers(withPageLimitChangeHandler(PhotosContainer)),
   fetchPhotos
 )
 
 PhotosContainer.propTypes = {
-  handlePreviousClick: PropTypes.func.isRequired,
   handleNextClick: PropTypes.func.isRequired,
+  handlePageLimitChange: PropTypes.func.isRequired,
+  handlePreviousClick: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   location: PropTypes.shape({

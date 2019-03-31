@@ -31,10 +31,16 @@ const defaultProps = {
   handlePageLimitChange: jest.fn(),
   handlePreviousClick: jest.fn(),
   handleNextClick: jest.fn(),
+  history: {
+    push: jest.fn()
+  },
   items: data,
   loading: false,
   location: {
     search: '?start=0&limit=20'
+  },
+  match: {
+    url: '/albums'
   }
 }
 
@@ -110,6 +116,25 @@ describe('AlbumsContainer', () => {
 
       expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
       expect(imgProps.alt).toBe(data[0].title)
+    })
+
+    it('navigates to photo when clicked', () => {
+      const push = jest.fn()
+      const props = { ...defaultProps, history: { push } }
+      const wrapper = shallow(<AlbumsContainer {...props} />)
+
+      const gridItem = wrapper
+        .find(Albums)
+        .dive()
+        .find(AlbumGridItem)
+        .at(0)
+
+      gridItem
+        .dive()
+        .find('img')
+        .simulate('click')
+
+      expect(push).toHaveBeenCalledWith('/albums/1?start=0&limit=20')
     })
 
     it('renders Loading when loading', () => {
