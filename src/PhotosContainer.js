@@ -6,8 +6,8 @@ import withItemFetcher from './withItemFetcher'
 import { fetchPhotos } from './api/placeHolderClient'
 
 export function PhotosContainer(props) {
-  const { items } = props
-  return <Photos photos={items} />
+  const { items, loading } = props
+  return <Photos photos={items} loading={loading} />
 }
 
 export default withItemFetcher(PhotosContainer, fetchPhotos)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import ReactLoading from 'react-loading'
 
 import { PhotosContainer } from './PhotosContainer'
 import Photos from './Photos'
@@ -23,7 +24,8 @@ const data = [
 ]
 
 const defaultProps = {
-  items: data
+  items: data,
+  loading: false
 }
 
 describe('PhotosContainer', () => {
@@ -83,5 +85,27 @@ describe('PhotosContainer', () => {
         expect(imgProps.alt).toBe(data[0].title)
       })
     })
+  })
+
+  it('renders Loading when loading', () => {
+    const wrapper = shallow(<PhotosContainer {...defaultProps} loading />)
+
+    expect(
+      wrapper
+        .find(Photos)
+        .dive()
+        .find(ReactLoading).length
+    ).toBe(1)
+  })
+
+  it('does not render Loading when not loading', () => {
+    const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+
+    expect(
+      wrapper
+        .find(Photos)
+        .dive()
+        .find(ReactLoading).length
+    ).toBe(0)
   })
 })

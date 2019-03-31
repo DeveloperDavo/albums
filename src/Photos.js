@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ReactLoading from 'react-loading'
 
 import PhotoGridItem from './PhotoGridItem'
 
 export default function Photos(props) {
-  const { photos } = props
+  const { loading, photos } = props
 
   const gridItems = photos.map(photo => (
     <PhotoGridItem
@@ -14,9 +15,14 @@ export default function Photos(props) {
     />
   ))
 
-  return <div className="Grid">{gridItems}</div>
+  return loading ? (
+    <ReactLoading className="loading" type={'spokes'} color={'black'} />
+  ) : (
+    <div className="Grid">{gridItems}</div>
+  )
 }
 
 Photos.propTypes = {
+  loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired
 }
