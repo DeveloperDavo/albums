@@ -11,7 +11,7 @@ import RedirectToAlbumStart from './RedirectToAlbumStart'
 import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 import withPaginationClickHandlers from './withPaginationClickHandlers'
 import withItemFetcher from './withItemFetcher'
-import { fetchAlbums } from './api/placeholderClient'
+import { fetchAlbums } from './api/placeHolderClient'
 
 import './AlbumsContainer.css'
 import './Error.css'

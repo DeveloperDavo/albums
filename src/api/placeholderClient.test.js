@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-import { fetchAlbums } from './placeholderClient'
-import { fetchPhotos } from './placeholderClient'
+import { fetchAlbums } from './placeHolderClient'
+import { fetchPhotos } from './placeHolderClient'
 
 jest.mock('axios')
 
