@@ -38,5 +38,20 @@ describe('PhotosContainer', () => {
           .find(PhotoGridItem).length
       ).toBe(data.length)
     })
+
+    describe('PhotoGridItem', () => {
+      it('renders photo with photo id as key', () => {
+        const wrapper = shallow(<PhotosContainer {...defaultProps} />)
+
+        expect(
+          wrapper
+            .find(Photos)
+            .dive()
+            .find(PhotoGridItem)
+            .at(0)
+            .key()
+        ).toBe(data[0].id.toString())
+      })
+    })
   })
 })
