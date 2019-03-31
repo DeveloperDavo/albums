@@ -1,15 +1,13 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import axios from 'axios'
 
 import withItemFetcher from './withItemFetcher'
-
-jest.mock('axios')
 
 function TestComponent() {
   return <p>Test component</p>
 }
-const WrappedTestComponent = withItemFetcher(TestComponent)
+const fetchItemsMock = jest.fn()
+const WrappedTestComponent = withItemFetcher(TestComponent, fetchItemsMock)
 
 const defaultProps = {
   history: {
@@ -38,7 +36,7 @@ const data = [
 
 describe('withItemFetcher', () => {
   beforeEach(() => {
-    axios.get.mockResolvedValue({ data })
+    fetchItemsMock.mockResolvedValue({ data })
   })
 
   it('fetches items on mount', async () => {
@@ -49,9 +47,7 @@ describe('withItemFetcher', () => {
     }
     const wrapper = await shallow(<WrappedTestComponent {...props} />)
 
-    expect(axios.get).toHaveBeenCalledWith(
-      'https://jsonplaceholder.typicode.com/albums?_start=60&_limit=30'
-    )
+    expect(fetchItemsMock).toHaveBeenCalledWith('60', '30')
     expect(wrapper.find(TestComponent).props().items).toEqual(data)
   })
 
@@ -82,14 +78,8 @@ describe('withItemFetcher', () => {
     }
     await wrapper.setProps(props)
 
-    expect(axios.get).toHaveBeenNthCalledWith(
-      1,
-      'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=20'
-    )
-    expect(axios.get).toHaveBeenNthCalledWith(
-      2,
-      'https://jsonplaceholder.typicode.com/albums?_start=40&_limit=20'
-    )
+    expect(fetchItemsMock).toHaveBeenNthCalledWith(1, '20', '20')
+    expect(fetchItemsMock).toHaveBeenNthCalledWith(2, '40', '20')
   })
 
   it('sets loading state to true before fetching', () => {
@@ -112,7 +102,7 @@ describe('withItemFetcher', () => {
   })
 
   it('sets error to true when fetch fails', async () => {
-    axios.get.mockRejectedValue()
+    fetchItemsMock.mockRejectedValue()
     const wrapper = await await shallow(
       <WrappedTestComponent {...defaultProps} />
     )
@@ -125,7 +115,7 @@ describe('withItemFetcher', () => {
   })
 
   it('resets state when there is an error', async () => {
-    axios.get.mockRejectedValue()
+    fetchItemsMock.mockRejectedValue()
     const wrapper = shallow(<WrappedTestComponent {...defaultProps} />)
     wrapper.setState({ empty: true, items: data, loading: true })
 
@@ -138,7 +128,7 @@ describe('withItemFetcher', () => {
   })
 
   it('sets empty to true when fetch is empty', async () => {
-    axios.get.mockResolvedValue({ data: [] })
+    fetchItemsMock.mockResolvedValue({ data: [] })
     const wrapper = await shallow(<WrappedTestComponent {...defaultProps} />)
 
     const props = wrapper.find(TestComponent).props()
@@ -146,7 +136,7 @@ describe('withItemFetcher', () => {
   })
 
   it('resets state when response is empty', async () => {
-    axios.get.mockResolvedValue({ data: [] })
+    fetchItemsMock.mockResolvedValue({ data: [] })
     const wrapper = shallow(<WrappedTestComponent {...defaultProps} />)
     wrapper.setState({ error: true, items: data, loading: true })
 
@@ -167,7 +157,7 @@ describe('withItemFetcher', () => {
     }
     shallow(<WrappedTestComponent {...props} />)
 
-    expect(axios.get).not.toHaveBeenCalled()
+    expect(fetchItemsMock).not.toHaveBeenCalled()
   })
 
   it('does not fetch if limit is not a number', () => {
@@ -179,6 +169,6 @@ describe('withItemFetcher', () => {
     }
     shallow(<WrappedTestComponent {...props} />)
 
-    expect(axios.get).not.toHaveBeenCalled()
+    expect(fetchItemsMock).not.toHaveBeenCalled()
   })
 })

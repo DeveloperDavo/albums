@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
 import queryString from 'query-string'
 
-export default function withItemFetcher(WrappedComponent) {
+export default function withItemFetcher(WrappedComponent, fetchItems) {
   return class extends React.Component {
     constructor(props) {
       super(props)
@@ -16,13 +15,11 @@ export default function withItemFetcher(WrappedComponent) {
     }
 
     getItems = () => {
-      const { start, limit } = queryString.parse(this.props.location.search)
+      const { location } = this.props
+      const { start, limit } = queryString.parse(location.search)
       if (!isNaN(start) && !isNaN(limit)) {
         this.setState({ loading: true, empty: false, error: false, items: [] })
-        axios
-          .get(
-            `https://jsonplaceholder.typicode.com/albums?_start=${start}&_limit=${limit}`
-          )
+        fetchItems(start, limit)
           .then(response => {
             if (response.data.length === 0) this.setState({ empty: true })
             this.setState({

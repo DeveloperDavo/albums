@@ -11,6 +11,7 @@ import RedirectToAlbumStart from './RedirectToAlbumStart'
 import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 import withPaginationClickHandlers from './withPaginationClickHandlers'
 import withItemFetcher from './withItemFetcher'
+import { fetchAlbums } from './api/placeholderClient'
 
 import './AlbumsContainer.css'
 import './Error.css'
@@ -52,7 +53,8 @@ export function AlbumsContainer(props) {
 }
 
 export default withItemFetcher(
-  withPaginationClickHandlers(withPageLimitChangeHandler(AlbumsContainer))
+  withPaginationClickHandlers(withPageLimitChangeHandler(AlbumsContainer)),
+  fetchAlbums
 )
 
 AlbumsContainer.propTypes = {
