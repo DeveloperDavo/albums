@@ -143,7 +143,6 @@ describe('AlbumsContainer', () => {
         location: {
           search: '?start=60&limit=30'
         },
-        match: { url: '/albums' },
         handlePreviousClick
       }
       const wrapper = shallow(<AlbumsContainer {...props} />)
@@ -162,7 +161,6 @@ describe('AlbumsContainer', () => {
       const handleNextClick = jest.fn()
       const props = {
         ...defaultProps,
-        match: { url: '/albums' },
         handleNextClick
       }
       const wrapper = shallow(<AlbumsContainer {...props} />)
