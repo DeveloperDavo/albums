@@ -2,35 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
+import pushToHistory from './pushToHistory'
+
 export default function withPaginationClickHandlers(WrappedComponent) {
-  return class extends React.Component {
-    pushToHistory(start = 0, limit = 20) {
-      this.props.history.push(
-        `${this.props.match.path}?start=${start}&limit=${limit}`
-      )
-    }
-
-    handlePreviousClick = () => {
-      const { start, limit } = queryString.parse(this.props.location.search)
+  return function(props) {
+    const { history, match } = props
+    function handlePreviousClick() {
+      const { start, limit } = queryString.parse(props.location.search)
       const previousStart = Number(start) - Number(limit)
-      this.pushToHistory(previousStart, limit)
+      pushToHistory(history, match, previousStart, limit)
     }
 
-    handleNextClick = () => {
-      const { start, limit } = queryString.parse(this.props.location.search)
+    function handleNextClick() {
+      const { start, limit } = queryString.parse(props.location.search)
       const nextStart = Number(start) + Number(limit)
-      this.pushToHistory(nextStart, limit)
+      pushToHistory(history, match, nextStart, limit)
     }
 
-    render() {
-      return (
-        <WrappedComponent
-          {...this.props}
-          handlePreviousClick={this.handlePreviousClick}
-          handleNextClick={this.handleNextClick}
-        />
-      )
-    }
+    return (
+      <WrappedComponent
+        {...props}
+        handlePreviousClick={handlePreviousClick}
+        handleNextClick={handleNextClick}
+      />
+    )
   }
 }
 

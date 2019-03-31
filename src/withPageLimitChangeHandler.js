@@ -1,26 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import pushToHistory from './pushToHistory'
+
 export default function withPageLimitChangeHandler(WrappedComponent) {
-  return class extends React.Component {
-    pushToHistory(start = 0, limit = 20) {
-      this.props.history.push(
-        `${this.props.match.path}?start=${start}&limit=${limit}`
-      )
+  return function(props) {
+    function handlePageLimitChange(event) {
+      const { history, match } = props
+      pushToHistory(history, match, 0, event.target.value)
     }
 
-    handlePageLimitChange = event => {
-      this.pushToHistory(0, event.target.value)
-    }
-
-    render() {
-      return (
-        <WrappedComponent
-          {...this.props}
-          handlePageLimitChange={this.handlePageLimitChange}
-        />
-      )
-    }
+    return (
+      <WrappedComponent
+        {...props}
+        handlePageLimitChange={handlePageLimitChange}
+      />
+    )
   }
 }
 
