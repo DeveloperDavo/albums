@@ -13,8 +13,6 @@ import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
 import RedirectToAlbumStart from './RedirectToAlbumStart'
 
-jest.mock('axios')
-
 const data = [
   {
     userId: 1,
@@ -29,391 +27,292 @@ const data = [
 ]
 
 const defaultProps = {
-  history: {
-    push: jest.fn()
-  },
-  location: {
-    search: '?start=0&limit=20'
-  },
-  match: {
-    path: '/path'
-  },
+  empty: false,
+  error: false,
   handlePageLimitChange: jest.fn(),
   handlePreviousClick: jest.fn(),
-  handleNextClick: jest.fn()
+  handleNextClick: jest.fn(),
+  items: data,
+  loading: false,
+  location: {
+    search: '?start=0&limit=20'
+  }
 }
 
-beforeEach(() => {
-  axios.get.mockResolvedValue({ data })
-})
+describe('AlbumsContainer', () => {
+  describe('Albums', () => {
+    it('renders albums', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
-it('fetches albums on mount', () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=60&limit=30'
-    },
-    match: { path: '/albums' }
-  }
-  shallow(<AlbumsContainer {...props} />)
+      expect(
+        wrapper
+          .find(Albums)
+          .dive()
+          .find(GridItem).length
+      ).toBe(data.length)
+    })
 
-  expect(axios.get).toHaveBeenCalledWith(
-    'https://jsonplaceholder.typicode.com/albums?_start=60&_limit=30'
-  )
-})
+    it('renders album with album id as key', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
-it('displays loading before fetching', () => {
-  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
+      expect(
+        wrapper
+          .find(Albums)
+          .dive()
+          .find(GridItem)
+          .at(0)
+          .key()
+      ).toBe(data[0].id.toString())
+    })
 
-  expect(
-    wrapper
-      .find(Albums)
-      .dive()
-      .find(ReactLoading)
-  ).toHaveLength(1)
-})
+    it('renders album with album title and user id', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
-it('does not display loading after fetching', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
+      const gridItem = wrapper
+        .find(Albums)
+        .dive()
+        .find(GridItem)
+        .at(0)
+      expect(
+        gridItem
+          .dive()
+          .find('.GridItem__title')
+          .text()
+      ).toBe(data[0].title)
+      expect(
+        gridItem
+          .dive()
+          .find('.GridItem__userId')
+          .text()
+      ).toBe(data[0].userId.toString())
+    })
 
-  expect(
-    wrapper
-      .find(Albums)
-      .dive()
-      .find(ReactLoading)
-  ).toHaveLength(0)
-})
+    it('renders album with album cover image', () => {
+      const data = [
+        {
+          userId: 23,
+          id: 1,
+          title: 'quidem molestiae enim'
+        }
+      ]
 
-describe('Pagination', () => {
-  it('handle previous button click', () => {
-    const handlePreviousClick = jest.fn()
-    const props = {
-      ...defaultProps,
-      location: {
-        search: '?start=60&limit=30'
-      },
-      match: { path: '/albums' },
-      handlePreviousClick
-    }
-    const wrapper = shallow(<AlbumsContainer {...props} />)
+      const wrapper = shallow(
+        <AlbumsContainer {...defaultProps} items={data} />
+      )
 
-    wrapper
-      .find(Pagination)
-      .dive()
-      .find('.Pagination__btn')
-      .at(0)
-      .simulate('click')
+      const imgProps = wrapper
+        .find(Albums)
+        .dive()
+        .find(GridItem)
+        .at(0)
+        .dive()
+        .find('img')
+        .props()
 
-    expect(handlePreviousClick).toHaveBeenCalled()
+      expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
+      expect(imgProps.alt).toBe(data[0].title)
+    })
+
+    it('renders Loading when loading', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} loading />)
+
+      expect(
+        wrapper
+          .find(Albums)
+          .dive()
+          .find(ReactLoading).length
+      ).toBe(1)
+    })
+
+    it('does not render Loading when not loading', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
+
+      expect(
+        wrapper
+          .find(Albums)
+          .dive()
+          .find(ReactLoading).length
+      ).toBe(0)
+    })
   })
 
-  it('handles next button click', () => {
-    const handleNextClick = jest.fn()
-    const props = {
-      ...defaultProps,
-      match: { path: '/albums' },
-      handleNextClick
-    }
-    const wrapper = shallow(<AlbumsContainer {...props} />)
-
-    wrapper
-      .find(Pagination)
-      .dive()
-      .find('.Pagination__btn')
-      .at(1)
-      .simulate('click')
-
-    expect(handleNextClick).toHaveBeenCalled()
-  })
-
-  it('hides previous button if start would be below 0', () => {
-    const props = {
-      ...defaultProps,
-      location: {
-        search: '?start=0&limit=30'
+  describe('Pagination', () => {
+    it('handle previous button click', () => {
+      const handlePreviousClick = jest.fn()
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=60&limit=30'
+        },
+        match: { path: '/albums' },
+        handlePreviousClick
       }
-    }
-    const wrapper = shallow(<AlbumsContainer {...props} />)
+      const wrapper = shallow(<AlbumsContainer {...props} />)
 
-    const prevBtn = wrapper
-      .find(Pagination)
-      .dive()
-      .find('.Pagination__btn')
-      .at(0)
-    expect(prevBtn.props().className).toContain('hidden')
-  })
-})
+      wrapper
+        .find(Pagination)
+        .dive()
+        .find('.Pagination__btn')
+        .at(0)
+        .simulate('click')
 
-describe('PageLimitSelect', () => {
-  it('handles page limit change', () => {
-    const handlePageLimitChange = jest.fn()
-    const props = {
-      ...defaultProps,
-      handlePageLimitChange
-    }
-    const wrapper = shallow(<AlbumsContainer {...props} />)
+      expect(handlePreviousClick).toHaveBeenCalled()
+    })
 
-    const event = { target: { value: 30 } }
-    wrapper
-      .find(PageLimitSelect)
-      .dive()
-      .find('select')
-      .simulate('change', event)
-
-    expect(handlePageLimitChange).toHaveBeenCalledWith(event)
-  })
-
-  it('renders current limit from url', () => {
-    const props = {
-      ...defaultProps,
-      location: {
-        search: '?start=20&limit=30'
+    it('handles next button click', () => {
+      const handleNextClick = jest.fn()
+      const props = {
+        ...defaultProps,
+        match: { path: '/albums' },
+        handleNextClick
       }
-    }
-    const wrapper = shallow(<AlbumsContainer {...props} />)
+      const wrapper = shallow(<AlbumsContainer {...props} />)
 
-    expect(
+      wrapper
+        .find(Pagination)
+        .dive()
+        .find('.Pagination__btn')
+        .at(1)
+        .simulate('click')
+
+      expect(handleNextClick).toHaveBeenCalled()
+    })
+
+    it('hides previous button if start would be below 0', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=0&limit=30'
+        }
+      }
+      const wrapper = shallow(<AlbumsContainer {...props} />)
+
+      const prevBtn = wrapper
+        .find(Pagination)
+        .dive()
+        .find('.Pagination__btn')
+        .at(0)
+      expect(prevBtn.props().className).toContain('hidden')
+    })
+  })
+
+  describe('PageLimitSelect', () => {
+    it('handles page limit change', () => {
+      const handlePageLimitChange = jest.fn()
+      const props = {
+        ...defaultProps,
+        handlePageLimitChange
+      }
+      const wrapper = shallow(<AlbumsContainer {...props} />)
+
+      const event = { target: { value: 30 } }
       wrapper
         .find(PageLimitSelect)
         .dive()
         .find('select')
-        .props().value
-    ).toBe(30)
-  })
-})
+        .simulate('change', event)
 
-it('fetches albums on query param change', async () => {
-  const prevProps = {
-    ...defaultProps,
-    location: {
-      search: '?start=20&limit=20'
-    }
-  }
-  const wrapper = shallow(<AlbumsContainer {...prevProps} />)
+      expect(handlePageLimitChange).toHaveBeenCalledWith(event)
+    })
 
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=40&limit=20'
-    }
-  }
-  await wrapper.setProps(props)
+    it('renders current limit from url', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: '?start=20&limit=30'
+        }
+      }
+      const wrapper = shallow(<AlbumsContainer {...props} />)
 
-  expect(axios.get).toHaveBeenNthCalledWith(
-    1,
-    'https://jsonplaceholder.typicode.com/albums?_start=20&_limit=20'
-  )
-  expect(axios.get).toHaveBeenNthCalledWith(
-    2,
-    'https://jsonplaceholder.typicode.com/albums?_start=40&_limit=20'
-  )
-})
-
-it('displays grid items on mount', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  expect(
-    wrapper
-      .find(Albums)
-      .dive()
-      .find(GridItem)
-  ).toHaveLength(data.length)
-})
-
-it('renders grid item with album id as key', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  expect(
-    wrapper
-      .find(Albums)
-      .dive()
-      .find(GridItem)
-      .at(0)
-      .key()
-  ).toBe(data[0].id.toString())
-})
-
-it('displays grid item with album title and user id', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  const gridItem = wrapper
-    .find(Albums)
-    .dive()
-    .find(GridItem)
-    .at(0)
-  expect(
-    gridItem
-      .dive()
-      .find('.GridItem__title')
-      .text()
-  ).toBe(data[0].title)
-  expect(
-    gridItem
-      .dive()
-      .find('.GridItem__userId')
-      .text()
-  ).toBe(data[0].userId.toString())
-})
-
-it('displays grid item with album cover image', async () => {
-  const data = [
-    {
-      userId: 23,
-      id: 1,
-      title: 'quidem molestiae enim'
-    }
-  ]
-  axios.get.mockResolvedValue({ data })
-
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  const imgProps = wrapper
-    .find(Albums)
-    .dive()
-    .find(GridItem)
-    .at(0)
-    .dive()
-    .find('img')
-    .props()
-  expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
-  expect(imgProps.alt).toBe(data[0].title)
-})
-
-it('does not display any errors', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  expect(wrapper.find(Error)).toHaveLength(0)
-})
-
-it('displays error if fetch fails', async () => {
-  axios.get.mockRejectedValue(new Error())
-
-  const wrapper = await await shallow(<AlbumsContainer {...defaultProps} />)
-
-  expect(wrapper.find(Error)).toHaveLength(1)
-})
-
-it('only displays error', () => {
-  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
-  wrapper.setState({
-    hasError: true,
-    loading: true,
-    isEmpty: true,
-    albums: data
+      expect(
+        wrapper
+          .find(PageLimitSelect)
+          .dive()
+          .find('select')
+          .props().value
+      ).toBe(30)
+    })
   })
 
-  expect(wrapper.find(Error)).toHaveLength(1)
-  expect(wrapper.find(EmptyResponseMessage)).toHaveLength(0)
-  expect(wrapper.find(ReactLoading)).toHaveLength(0)
-  expect(wrapper.find(Pagination)).toHaveLength(0)
-  expect(wrapper.find(PageLimitSelect)).toHaveLength(0)
-  expect(wrapper.find('.Grid')).toHaveLength(0)
-})
+  describe('Error', () => {
+    it('does not render error if there is not one', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
 
-it('does not display error after successful fetch', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-  wrapper.setState({ hasError: true })
+      expect(wrapper.find(Error).length).toBe(0)
+    })
 
-  await wrapper.instance().getAlbums()
+    it('renders error and only error if there is one', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} error />)
 
-  expect(wrapper.find(Error)).toHaveLength(0)
-})
-
-it('does not display empty response message after successful fetch', async () => {
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-  wrapper.setState({ isEmpty: true })
-
-  await wrapper.instance().getAlbums()
-
-  expect(wrapper.find(Link)).toHaveLength(0)
-})
-
-it('redirects if start is not a number', async () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=NaN&limit=30'
-    }
-  }
-  const wrapper = await shallow(<AlbumsContainer {...props} />)
-
-  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
-})
-
-it('redirects if limit is not a number', async () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=50&limit=undefined'
-    }
-  }
-  const wrapper = await shallow(<AlbumsContainer {...props} />)
-
-  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
-})
-
-it('redirects if there are no query params', async () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: ''
-    }
-  }
-  const wrapper = await shallow(<AlbumsContainer {...props} />)
-
-  expect(wrapper.find(RedirectToAlbumStart)).toHaveLength(1)
-})
-
-it('does not fetch if start is not a number', () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=50&limit=undefined'
-    }
-  }
-  shallow(<AlbumsContainer {...props} />)
-
-  expect(axios.get).not.toHaveBeenCalled()
-})
-
-it('does not fetch if limit is not a number', () => {
-  const props = {
-    ...defaultProps,
-    location: {
-      search: '?start=50&limit=undefined'
-    }
-  }
-  const wrapper = shallow(<AlbumsContainer {...props} />)
-
-  expect(axios.get).not.toHaveBeenCalled()
-})
-
-it('displays link back to albums when the response is empty', async () => {
-  axios.get.mockResolvedValue({ data: [] })
-  const wrapper = await shallow(<AlbumsContainer {...defaultProps} />)
-
-  expect(
-    wrapper
-      .find(EmptyResponseMessage)
-      .dive()
-      .find(Link)
-      .props().to
-  ).toBe('/albums')
-})
-
-it('only displays empty response message', () => {
-  const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
-  wrapper.setState({
-    hasError: false,
-    loading: true,
-    isEmpty: true,
-    albums: data
+      expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find(Albums).length).toBe(0)
+      expect(wrapper.find(Error).length).toBe(1)
+    })
   })
 
-  expect(wrapper.find(EmptyResponseMessage)).toHaveLength(1)
-  expect(wrapper.find(Error)).toHaveLength(0)
-  expect(wrapper.find(ReactLoading)).toHaveLength(0)
-  expect(wrapper.find(Pagination)).toHaveLength(0)
-  expect(wrapper.find(PageLimitSelect)).toHaveLength(0)
-  expect(wrapper.find('.Grid')).toHaveLength(0)
+  describe('EmptyResponseMessage', () => {
+    it('does not render empty response when there is not one', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
+
+      expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
+    })
+
+    it('renders link and only link back to albums when the response is empty', () => {
+      const wrapper = shallow(<AlbumsContainer {...defaultProps} empty />)
+
+      expect(wrapper.find(Error).length).toBe(0)
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find('.Grid').length).toBe(0)
+      expect(
+        wrapper
+          .find(EmptyResponseMessage)
+          .dive()
+          .find(Link)
+          .props().to
+      ).toBe('/albums')
+    })
+
+    describe('RedirectToAlbumStart', () => {
+      it('redirects if start is not a number', () => {
+        const props = {
+          ...defaultProps,
+          location: {
+            search: '?start=NaN&limit=30'
+          }
+        }
+        const wrapper = shallow(<AlbumsContainer {...props} />)
+
+        expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+      })
+
+      it('redirects if limit is not a number', () => {
+        const props = {
+          ...defaultProps,
+          location: {
+            search: '?start=50&limit=undefined'
+          }
+        }
+        const wrapper = shallow(<AlbumsContainer {...props} />)
+
+        expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+      })
+
+      it('redirects if there are no query params', () => {
+        const props = {
+          ...defaultProps,
+          location: {
+            search: ''
+          }
+        }
+        const wrapper = shallow(<AlbumsContainer {...props} />)
+
+        expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+      })
+    })
+  })
 })
