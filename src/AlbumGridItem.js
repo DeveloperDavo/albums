@@ -35,7 +35,6 @@ export default function AlbumGridItem(props) {
         alt={title}
         onClick={handleClick}
       />
-      <p className="GridItem__userId">{userId}</p>
       <p className="GridItem__title">{title}</p>
     </div>
   )

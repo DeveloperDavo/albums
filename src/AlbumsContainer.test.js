@@ -70,28 +70,6 @@ describe('AlbumsContainer', () => {
       ).toBe(data[0].id.toString())
     })
 
-    it('renders album with album title and user id', () => {
-      const wrapper = shallow(<AlbumsContainer {...defaultProps} />)
-
-      const gridItem = wrapper
-        .find(Albums)
-        .dive()
-        .find(AlbumGridItem)
-        .at(0)
-      expect(
-        gridItem
-          .dive()
-          .find('.GridItem__title')
-          .text()
-      ).toBe(data[0].title)
-      expect(
-        gridItem
-          .dive()
-          .find('.GridItem__userId')
-          .text()
-      ).toBe(data[0].userId.toString())
-    })
-
     it('renders album with album cover image', () => {
       const data = [
         {
