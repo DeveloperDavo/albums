@@ -8,16 +8,26 @@ import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
 import RedirectToAlbumStart from './RedirectToAlbumStart'
 
+import pushToHistory from './util/pushToHistory'
+
 export default function Container(props) {
-  const {
-    children,
-    empty,
-    error,
-    handleNextClick,
-    handlePageLimitChange,
-    handlePreviousClick,
-    location
-  } = props
+  const { children, empty, error, history, location, match } = props
+
+  function handlePageLimitChange(event) {
+    pushToHistory(history, match.url, 0, event.target.value)
+  }
+
+  function handlePreviousClick() {
+    const { start, limit } = queryString.parse(props.location.search)
+    const previousStart = Number(start) - Number(limit)
+    pushToHistory(history, match.url, previousStart, limit)
+  }
+
+  function handleNextClick() {
+    const { start, limit } = queryString.parse(props.location.search)
+    const nextStart = Number(start) + Number(limit)
+    pushToHistory(history, match.url, nextStart, limit)
+  }
 
   const { start, limit } = queryString.parse(location.search)
   if (isNaN(start) || isNaN(limit)) {
@@ -46,10 +56,13 @@ export default function Container(props) {
 Container.propTypes = {
   empty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  handleNextClick: PropTypes.func.isRequired,
-  handlePageLimitChange: PropTypes.func.isRequired,
-  handlePreviousClick: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired
   }).isRequired
 }

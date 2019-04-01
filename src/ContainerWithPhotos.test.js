@@ -26,14 +26,13 @@ const data = [
 const defaultProps = {
   empty: false,
   error: false,
-  handlePageLimitChange: jest.fn(),
-  handlePreviousClick: jest.fn(),
-  handleNextClick: jest.fn(),
+  history: { push: jest.fn() },
   items: data,
   loading: false,
   location: {
     search: '?start=0&limit=20'
-  }
+  },
+  match: { url: '/albums' }
 }
 
 describe('ContainerWithPhotos', () => {

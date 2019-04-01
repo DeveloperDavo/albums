@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 
 import Container from './Container'
 import Albums from './Albums'
-import withPageLimitChangeHandler from './withPageLimitChangeHandler'
-import withPaginationClickHandlers from './withPaginationClickHandlers'
 import withItemFetcher from './withItemFetcher'
 import { fetchAlbums } from './api/placeHolderClient'
 
@@ -25,17 +23,11 @@ export function ContainerWithAlbums(props) {
   )
 }
 
-export default withItemFetcher(
-  withPaginationClickHandlers(withPageLimitChangeHandler(ContainerWithAlbums)),
-  fetchAlbums
-)
+export default withItemFetcher(ContainerWithAlbums, fetchAlbums)
 
 ContainerWithAlbums.propTypes = {
   empty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  handlePageLimitChange: PropTypes.func.isRequired,
-  handlePreviousClick: PropTypes.func.isRequired,
-  handleNextClick: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   location: PropTypes.shape({

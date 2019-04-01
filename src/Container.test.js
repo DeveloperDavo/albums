@@ -32,12 +32,13 @@ const data = [
 const defaultProps = {
   empty: false,
   error: false,
-  handlePageLimitChange: jest.fn(),
   handlePreviousClick: jest.fn(),
   handleNextClick: jest.fn(),
+  history: { push: jest.fn() },
   location: {
     search: '?start=0&limit=20'
-  }
+  },
+  match: { url: '/albums' }
 }
 
 describe('Container', () => {
@@ -52,14 +53,15 @@ describe('Container', () => {
   })
 
   describe('Pagination', () => {
-    it('handle previous button click', () => {
-      const handlePreviousClick = jest.fn()
+    it('sets start and keeps limit params in url upon clicking previous', () => {
+      const push = jest.fn()
       const props = {
         ...defaultProps,
         location: {
           search: '?start=60&limit=30'
         },
-        handlePreviousClick
+        history: { push },
+        match: { url: '/albums' }
       }
       const wrapper = shallow(<Container {...props} />)
 
@@ -70,14 +72,18 @@ describe('Container', () => {
         .at(0)
         .simulate('click')
 
-      expect(handlePreviousClick).toHaveBeenCalled()
+      expect(push).toHaveBeenCalledWith('/albums?start=30&limit=30')
     })
 
-    it('handles next button click', () => {
-      const handleNextClick = jest.fn()
+    it('sets start and keeps limit params in url upon clicking next', () => {
+      const push = jest.fn()
       const props = {
         ...defaultProps,
-        handleNextClick
+        history: { push },
+        location: {
+          search: '?start=0&limit=20'
+        },
+        match: { url: '/albums' }
       }
       const wrapper = shallow(<Container {...props} />)
 
@@ -88,7 +94,7 @@ describe('Container', () => {
         .at(1)
         .simulate('click')
 
-      expect(handleNextClick).toHaveBeenCalled()
+      expect(push).toHaveBeenCalledWith('/albums?start=20&limit=20')
     })
 
     it('hides previous button if start would be below 0', () => {
@@ -105,19 +111,24 @@ describe('Container', () => {
         .dive()
         .find('.Pagination__btn')
         .at(0)
+
       expect(prevBtn.props().className).toContain('hidden')
     })
   })
 
   describe('PageLimitSelect', () => {
-    it('handles page limit change', () => {
-      const handlePageLimitChange = jest.fn()
+    it('sets limit and resets start upon selecting a limit', () => {
+      const push = jest.fn()
       const props = {
         ...defaultProps,
-        handlePageLimitChange
+        location: {
+          search: '?start=20&limit=20'
+        },
+        history: { push },
+        match: { url: '/albums' }
       }
-      const wrapper = shallow(<Container {...props} />)
 
+      const wrapper = shallow(<Container {...props} />)
       const event = { target: { value: 30 } }
       wrapper
         .find(PageLimitSelect)
@@ -125,7 +136,7 @@ describe('Container', () => {
         .find('select')
         .simulate('change', event)
 
-      expect(handlePageLimitChange).toHaveBeenCalledWith(event)
+      expect(push).toHaveBeenCalledWith('/albums?start=0&limit=30')
     })
 
     it('renders current limit from url', () => {

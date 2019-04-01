@@ -5,8 +5,6 @@ import Container from './Container'
 import Photos from './Photos'
 
 import withItemFetcher from './withItemFetcher'
-import withPaginationClickHandlers from './withPaginationClickHandlers'
-import withPageLimitChangeHandler from './withPageLimitChangeHandler'
 import { fetchPhotos } from './api/placeHolderClient'
 
 export function ContainerWithPhotos(props) {
@@ -19,17 +17,11 @@ export function ContainerWithPhotos(props) {
   )
 }
 
-export default withItemFetcher(
-  withPaginationClickHandlers(withPageLimitChangeHandler(ContainerWithPhotos)),
-  fetchPhotos
-)
+export default withItemFetcher(ContainerWithPhotos, fetchPhotos)
 
 ContainerWithPhotos.propTypes = {
   empty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  handleNextClick: PropTypes.func.isRequired,
-  handlePageLimitChange: PropTypes.func.isRequired,
-  handlePreviousClick: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   location: PropTypes.shape({
