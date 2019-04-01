@@ -161,12 +161,13 @@ describe('Container', () => {
         </Container>
       )
 
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(0)
+      expect(wrapper.find(Error).length).toBe(1)
       expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
       expect(wrapper.find(ReactLoading).length).toBe(0)
-      expect(wrapper.find(Pagination).length).toBe(0)
       expect(wrapper.find(PageLimitSelect).length).toBe(0)
       expect(wrapper.find(TestComponent).length).toBe(0)
-      expect(wrapper.find(Error).length).toBe(1)
+      expect(wrapper.find(Pagination).length).toBe(0)
     })
   })
 
@@ -184,13 +185,9 @@ describe('Container', () => {
         </Container>
       )
 
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(0)
       expect(wrapper.find(Error).length).toBe(0)
-      expect(wrapper.find(ReactLoading).length).toBe(0)
-      expect(wrapper.find(PageLimitSelect).length).toBe(0)
-      expect(wrapper.find(Pagination).length).toBe(0)
-      expect(wrapper.find(PageLimitSelect).length).toBe(0)
-      expect(wrapper.find(TestComponent).length).toBe(0)
-      expect(wrapper.find('.Grid').length).toBe(0)
+
       expect(
         wrapper
           .find(EmptyResponseMessage)
@@ -198,6 +195,11 @@ describe('Container', () => {
           .find(Link)
           .props().to
       ).toBe('/albums')
+
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find(TestComponent).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
     })
   })
 
@@ -236,6 +238,24 @@ describe('Container', () => {
       const wrapper = shallow(<Container {...props} />)
 
       expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+    })
+
+    it('renders Redirect and only Redirect if there is one', () => {
+      const props = {
+        ...defaultProps,
+        location: {
+          search: ''
+        }
+      }
+      const wrapper = shallow(<Container {...props} empty error />)
+
+      expect(wrapper.find(RedirectToAlbumStart).length).toBe(1)
+      expect(wrapper.find(Error).length).toBe(0)
+      expect(wrapper.find(EmptyResponseMessage).length).toBe(0)
+      expect(wrapper.find(ReactLoading).length).toBe(0)
+      expect(wrapper.find(PageLimitSelect).length).toBe(0)
+      expect(wrapper.find(TestComponent).length).toBe(0)
+      expect(wrapper.find(Pagination).length).toBe(0)
     })
   })
 })

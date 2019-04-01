@@ -19,15 +19,15 @@ export default function Container(props) {
     location
   } = props
 
+  const { start, limit } = queryString.parse(location.search)
+  if (isNaN(start) || isNaN(limit)) {
+    return <RedirectToAlbumStart />
+  }
+
   if (error) {
     return <Error />
   } else if (empty) {
     return <EmptyResponseMessage />
-  }
-
-  const { start, limit } = queryString.parse(location.search)
-  if (isNaN(start) || isNaN(limit)) {
-    return <RedirectToAlbumStart />
   }
 
   return (
