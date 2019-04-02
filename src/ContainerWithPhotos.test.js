@@ -4,7 +4,6 @@ import ReactLoading from 'react-loading'
 
 import { ContainerWithPhotos } from './ContainerWithPhotos'
 import Photos from './Photos'
-import PhotoGridItem from './PhotoGridItem'
 
 const data = [
   {
@@ -36,62 +35,10 @@ const defaultProps = {
 }
 
 describe('ContainerWithPhotos', () => {
-  describe('Photos', () => {
-    it('renders photos', () => {
-      const wrapper = shallow(<ContainerWithPhotos {...defaultProps} />)
+  it('renders photos', () => {
+    const wrapper = shallow(<ContainerWithPhotos {...defaultProps} loading />)
 
-      expect(
-        wrapper
-          .find(Photos)
-          .dive()
-          .find(PhotoGridItem).length
-      ).toBe(data.length)
-    })
-
-    describe('PhotoGridItem', () => {
-      it('renders photo grid item with photo id as key', () => {
-        const wrapper = shallow(<ContainerWithPhotos {...defaultProps} />)
-
-        expect(
-          wrapper
-            .find(Photos)
-            .dive()
-            .find(PhotoGridItem)
-            .at(0)
-            .key()
-        ).toBe(data[0].id.toString())
-      })
-
-      it('renders photo grid item with photo title', () => {
-        const wrapper = shallow(<ContainerWithPhotos {...defaultProps} />)
-
-        expect(
-          wrapper
-            .find(Photos)
-            .dive()
-            .find(PhotoGridItem)
-            .at(0)
-            .dive()
-            .find('.GridItem__title')
-            .text()
-        ).toBe(data[0].title)
-      })
-
-      it('renders photo grid item with thumbnail', () => {
-        const wrapper = shallow(<ContainerWithPhotos {...defaultProps} />)
-        const imgProps = wrapper
-          .find(Photos)
-          .dive()
-          .find(PhotoGridItem)
-          .at(0)
-          .dive()
-          .find('img')
-          .props()
-
-        expect(imgProps.src).toBe('https://via.placeholder.com/150/250289')
-        expect(imgProps.alt).toBe(data[0].title)
-      })
-    })
+    expect(wrapper.find(Photos).length).toBe(1)
   })
 
   it('renders Loading when loading', () => {
