@@ -5,8 +5,6 @@ import ReactModal from 'react-modal'
 
 import PhotoGridItem from './PhotoGridItem'
 
-ReactModal.setAppElement('#root')
-
 const customStyles = {
   content: {
     top: '50%',
