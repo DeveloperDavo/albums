@@ -1,12 +1,12 @@
 # Albums
 
 ## Local development
-
+- Install `yarn install`
 - Start `yarn start`
 - Test `yarn test`
 
 ## Prod build with Docker
-
+- Install `yarn install`
 - Build `yarn build`
 - Start `docker-compose up`
 - View at http://localhost
