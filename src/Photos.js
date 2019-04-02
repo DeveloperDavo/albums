@@ -1,25 +1,56 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactLoading from 'react-loading'
+import ReactModal from 'react-modal'
 
 import PhotoGridItem from './PhotoGridItem'
 
-export default function Photos(props) {
-  const { loading, photos } = props
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+}
 
-  const gridItems = photos.map(photo => (
-    <PhotoGridItem
-      key={photo.id}
-      title={photo.title}
-      thumbnailUrl={photo.thumbnailUrl}
-    />
-  ))
+export default class Photos extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showModal: false
+    }
+  }
 
-  return loading ? (
-    <ReactLoading className="loading" type={'spokes'} color={'black'} />
-  ) : (
-    <div className="Grid">{gridItems}</div>
-  )
+  handleOpenModal = () => {
+    this.setState({ showModal: true })
+  }
+
+  render() {
+    const { loading, photos } = this.props
+
+    const gridItems = photos.map(photo => (
+      <PhotoGridItem
+        key={photo.id}
+        onClick={this.handleOpenModal}
+        title={photo.title}
+        thumbnailUrl={photo.thumbnailUrl}
+      />
+    ))
+
+    return loading ? (
+      <ReactLoading className="loading" type={'spokes'} color={'black'} />
+    ) : (
+      <>
+        <div className="Grid">{gridItems}</div>
+        <ReactModal isOpen={this.state.showModal} style={customStyles}>
+          <button>Close Modal</button>
+        </ReactModal>
+      </>
+    )
+  }
 }
 
 Photos.propTypes = {
