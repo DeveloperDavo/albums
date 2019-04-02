@@ -26,7 +26,8 @@
   box-sizing: content-box;
   text-align: center;
   margin: 0 auto;
-  padding: 1rem;
+  padding-bottom: 1rem;
+  max-width: 90%;
 }
 
 .Modal__photo {
@@ -34,6 +35,5 @@
   padding-bottom: 1rem;
   display: block;
   text-align: center;
-  max-height: 80%;
-  max-height: 80vw;
+  max-width: 90%;
 }
