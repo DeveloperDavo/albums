@@ -88,9 +88,9 @@ describe('Photos', () => {
         .find('div')
         .simulate('click')
 
-      expect(wrapper.find('h1').text()).toBe(photos[1].title)
-      expect(wrapper.find('img').props().src).toBe(photos[1].url)
-      expect(wrapper.find('img').props().alt).toBe(photos[1].title)
+      expect(wrapper.find('h3').text()).toBe(photos[1].title)
+      expect(wrapper.find('.Modal__photo').props().src).toBe(photos[1].url)
+      expect(wrapper.find('.Modal__photo').props().alt).toBe(photos[1].title)
     })
 
     it('opens modal on photo grid item click', () => {
@@ -104,7 +104,7 @@ describe('Photos', () => {
       expect(wrapper.find(ReactModal).props().isOpen).toBe(true)
     })
 
-    it('closes modal on close button click', () => {
+    it('closes modal on close click', () => {
       const wrapper = shallow(<Photos {...defaultProps} />)
 
       wrapper
@@ -114,7 +114,7 @@ describe('Photos', () => {
 
       wrapper
         .find(ReactModal)
-        .find('button')
+        .find('.Modal__close__img')
         .simulate('click')
 
       expect(wrapper.find(ReactModal).props().isOpen).toBe(false)

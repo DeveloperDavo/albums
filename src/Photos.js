@@ -4,15 +4,21 @@ import ReactLoading from 'react-loading'
 import ReactModal from 'react-modal'
 
 import PhotoGridItem from './PhotoGridItem'
+import './Modal.css'
 
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    height: '100%',
+    width: '100%',
+    top: '0',
+    bottom: '0',
+    left: '0',
+    right: '0',
+    margin: 'auto',
+    padding: 0,
+    background: 'rgba(0, 0, 0, 0.8)',
+    border: 'none',
+    borderRadius: '0'
   }
 }
 
@@ -57,12 +63,24 @@ export default class Photos extends React.Component {
       <>
         <div className="Grid">{gridItems}</div>
         <ReactModal isOpen={this.state.showModal} style={customStyles}>
-          <h1>{this.state.photoDetailTitle}</h1>
-          <img
-            src={this.state.photoDetailUrl}
-            alt={this.state.photoDetailTitle}
-          />
-          <button onClick={this.handleCloseModal}>Close Modal</button>
+          <div className="Modal__content__wrapper">
+            <div className="Modal__content">
+              <div className="Modal__close">
+                <img
+                  className="Modal__close__img"
+                  onClick={this.handleCloseModal}
+                  src="/close-button.svg"
+                  alt="close"
+                />
+              </div>
+              <h3 className="Modal__title">{this.state.photoDetailTitle}</h3>
+              <img
+                className="Modal__photo"
+                src={this.state.photoDetailUrl}
+                alt={this.state.photoDetailTitle}
+              />
+            </div>
+          </div>
         </ReactModal>
       </>
     )

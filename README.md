@@ -16,3 +16,4 @@
 
 <div>Icons made by <a href="https://www.freepik.com/">Freepik</a> is licensed by CC 3.0 BY</div>
 <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry">Kiranshastry</a> is licensed by CC 3.0 BY</div>
+<div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> is licensed by a CC 3.0 BY</div>
