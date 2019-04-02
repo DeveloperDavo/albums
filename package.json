@@ -12,6 +12,7 @@
     "pretty-quick": "^1.10.0",
     "query-string": "^6.4.0",
     "react": "^16.8.5",
+    "react-app-polyfill": "^0.2.2",
     "react-dom": "^16.8.5",
     "react-loading": "^2.0.3",
     "react-modal": "^3.8.1",
