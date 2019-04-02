@@ -72,13 +72,26 @@ describe('Photos', () => {
       expect(imgProps.alt).toBe(photos[0].title)
     })
 
-    it('renders closed photo detail modal', () => {
+    it('renders closed modal', () => {
       const wrapper = shallow(<Photos {...defaultProps} />)
 
       expect(wrapper.find(ReactModal).props().isOpen).toBe(false)
     })
 
-    it('opens photo detail modal on photo grid item click', () => {
+    it('renders modal with photo detail title', () => {
+      const wrapper = shallow(<Photos {...defaultProps} />)
+
+      wrapper
+        .find(PhotoGridItem)
+        .at(1)
+        .dive()
+        .find('div')
+        .simulate('click')
+
+      expect(wrapper.find('h1').text()).toBe(photos[1].title)
+    })
+
+    it('opens modal on photo grid item click', () => {
       const wrapper = shallow(<Photos {...defaultProps} />)
 
       wrapper
@@ -89,7 +102,7 @@ describe('Photos', () => {
       expect(wrapper.find(ReactModal).props().isOpen).toBe(true)
     })
 
-    it('closes photo detail modal on close button click', () => {
+    it('closes modal on close button click', () => {
       const wrapper = shallow(<Photos {...defaultProps} />)
 
       wrapper

@@ -20,12 +20,13 @@ export default class Photos extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      photoDetailTitle: '',
       showModal: false
     }
   }
 
-  handleOpenModal = () => {
-    this.setState({ showModal: true })
+  handleOpenModal = title => {
+    this.setState({ photoDetailTitle: title, showModal: true })
   }
 
   handleCloseModal = () => {
@@ -50,6 +51,7 @@ export default class Photos extends React.Component {
       <>
         <div className="Grid">{gridItems}</div>
         <ReactModal isOpen={this.state.showModal} style={customStyles}>
+          <h1>{this.state.photoDetailTitle}</h1>
           <button onClick={this.handleCloseModal}>Close Modal</button>
         </ReactModal>
       </>
