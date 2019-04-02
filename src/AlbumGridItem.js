@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import pushToHistory from './util/pushToHistory'
 
 import './GridItem.css'
-import './AlbumGridItem.css'
 
 const colors = [
   '000000',
@@ -28,7 +27,7 @@ export default function AlbumGridItem(props) {
   const { title, userId } = props
   const color = colors[userId % 10]
   return (
-    <div className="AlbumGridItem GridItem" onClick={handleClick}>
+    <div className="GridItem" onClick={handleClick}>
       <img src={`https://via.placeholder.com/150/${color}`} alt={title} />
       <p className="GridItem__title">{title}</p>
     </div>
