@@ -17,7 +17,7 @@ export default function PageLimitSelect(props) {
 
   return (
     <div className="PageLimitSelect">
-      <label>Number of albums per page: </label>
+      <label>Number of results per page: </label>
       <select value={Number(limit)} onChange={props.onChange}>
         {options}
       </select>
