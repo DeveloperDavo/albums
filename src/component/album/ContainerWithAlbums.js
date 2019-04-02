@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Container from './Container'
+import Container from '../Container'
 import Albums from './Albums'
-import withItemFetcher from './withItemFetcher'
-import { fetchAlbums } from './api/placeHolderClient'
+import withItemFetcher from '../withItemFetcher'
+import { fetchAlbums } from '../../api/placeHolderClient'
 
-import './Error.css'
+import '../Error.css'
 
 export function ContainerWithAlbums(props) {
   const { history, items, loading, location } = props

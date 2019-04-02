@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Container from './Container'
+import Container from '../Container'
 import Photos from './Photos'
 
-import withItemFetcher from './withItemFetcher'
-import { fetchPhotos } from './api/placeHolderClient'
+import withItemFetcher from '../withItemFetcher'
+import { fetchPhotos } from '../../api/placeHolderClient'
 
 export function ContainerWithPhotos(props) {
   const { items, loading } = props

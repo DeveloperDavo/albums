@@ -8,7 +8,7 @@ import Error from './Error'
 import EmptyResponseMessage from './EmptyResponseMessage'
 import RedirectToAlbumStart from './RedirectToAlbumStart'
 
-import pushToHistory from './util/pushToHistory'
+import pushToHistory from '../util/pushToHistory'
 
 export default function Container(props) {
   const { children, empty, error, history, location, match } = props

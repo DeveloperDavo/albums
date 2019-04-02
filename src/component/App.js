@@ -1,9 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-import ContainerWithAlbums from './ContainerWithAlbums'
+import ContainerWithAlbums from './album/ContainerWithAlbums'
 import RedirectToAlbumStart from './RedirectToAlbumStart'
-import ContainerWithPhotos from './ContainerWithPhotos'
+import ContainerWithPhotos from './photo/ContainerWithPhotos'
 
 export default function App() {
   return (

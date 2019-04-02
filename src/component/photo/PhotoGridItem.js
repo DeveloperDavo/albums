@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './GridItem.css'
+import '../GridItem.css'
 
 export default function PhotoGridItem(props) {
   const { title, thumbnailUrl, url } = props

@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import pushToHistory from './util/pushToHistory'
+import pushToHistory from '../../util/pushToHistory'
 
-import './GridItem.css'
+import '../GridItem.css'
 
 const colors = [
   '000000',
