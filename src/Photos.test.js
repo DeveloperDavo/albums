@@ -88,5 +88,21 @@ describe('Photos', () => {
 
       expect(wrapper.find(ReactModal).props().isOpen).toBe(true)
     })
+
+    it('closes photo detail modal on close button click', () => {
+      const wrapper = shallow(<Photos {...defaultProps} />)
+
+      wrapper
+        .find(PhotoGridItem)
+        .at(1)
+        .simulate('click')
+
+      wrapper
+        .find(ReactModal)
+        .find('button')
+        .simulate('click')
+
+      expect(wrapper.find(ReactModal).props().isOpen).toBe(false)
+    })
   })
 })
