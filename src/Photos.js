@@ -21,12 +21,17 @@ export default class Photos extends React.Component {
     super(props)
     this.state = {
       photoDetailTitle: '',
+      photoDetailUrl: '',
       showModal: false
     }
   }
 
-  handleOpenModal = title => {
-    this.setState({ photoDetailTitle: title, showModal: true })
+  handleOpenModal = (title, url) => {
+    this.setState({
+      photoDetailTitle: title,
+      photoDetailUrl: url,
+      showModal: true
+    })
   }
 
   handleCloseModal = () => {
@@ -42,6 +47,7 @@ export default class Photos extends React.Component {
         onClick={this.handleOpenModal}
         title={photo.title}
         thumbnailUrl={photo.thumbnailUrl}
+        url={photo.url}
       />
     ))
 
@@ -52,6 +58,10 @@ export default class Photos extends React.Component {
         <div className="Grid">{gridItems}</div>
         <ReactModal isOpen={this.state.showModal} style={customStyles}>
           <h1>{this.state.photoDetailTitle}</h1>
+          <img
+            src={this.state.photoDetailUrl}
+            alt={this.state.photoDetailTitle}
+          />
           <button onClick={this.handleCloseModal}>Close Modal</button>
         </ReactModal>
       </>

@@ -78,7 +78,7 @@ describe('Photos', () => {
       expect(wrapper.find(ReactModal).props().isOpen).toBe(false)
     })
 
-    it('renders modal with photo detail title', () => {
+    it('renders modal with photo details', () => {
       const wrapper = shallow(<Photos {...defaultProps} />)
 
       wrapper
@@ -89,6 +89,8 @@ describe('Photos', () => {
         .simulate('click')
 
       expect(wrapper.find('h1').text()).toBe(photos[1].title)
+      expect(wrapper.find('img').props().src).toBe(photos[1].url)
+      expect(wrapper.find('img').props().alt).toBe(photos[1].title)
     })
 
     it('opens modal on photo grid item click', () => {
