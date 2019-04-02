@@ -17,10 +17,13 @@ export default function PageLimitSelect(props) {
 
   return (
     <div className="PageLimitSelect">
-      <label>Number of results per page: </label>
-      <select value={Number(limit)} onChange={props.onChange}>
-        {options}
-      </select>
+      <label>
+        Number of results per page:
+        <span>&nbsp;</span>
+        <select value={Number(limit)} onChange={props.onChange}>
+          {options}
+        </select>
+      </label>
     </div>
   )
 }
