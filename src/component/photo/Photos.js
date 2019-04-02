@@ -70,14 +70,14 @@ export default class Photos extends React.Component {
                   className="Modal__close__img"
                   onClick={this.handleCloseModal}
                   src="/close-button.svg"
-                  alt="close"
+                  alt="close button"
                 />
               </div>
               <h3 className="Modal__title">{this.state.photoDetailTitle}</h3>
               <img
                 className="Modal__photo"
                 src={this.state.photoDetailUrl}
-                alt={this.state.photoDetailTitle}
+                alt="full size"
               />
             </div>
           </div>

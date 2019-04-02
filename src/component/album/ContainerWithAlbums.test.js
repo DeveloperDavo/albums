@@ -82,7 +82,7 @@ describe('ContainerWithAlbums', () => {
         .props()
 
       expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
-      expect(imgProps.alt).toBe(data[0].title)
+      expect(imgProps.alt).toBe('thumbnail')
     })
 
     it('navigates to photo when clicked', () => {

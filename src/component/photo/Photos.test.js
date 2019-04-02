@@ -69,7 +69,7 @@ describe('Photos', () => {
         .props()
 
       expect(imgProps.src).toBe('https://via.placeholder.com/150/250289')
-      expect(imgProps.alt).toBe(photos[0].title)
+      expect(imgProps.alt).toBe('thumbnail')
     })
 
     it('renders closed modal', () => {
@@ -90,7 +90,7 @@ describe('Photos', () => {
 
       expect(wrapper.find('h3').text()).toBe(photos[1].title)
       expect(wrapper.find('.Modal__photo').props().src).toBe(photos[1].url)
-      expect(wrapper.find('.Modal__photo').props().alt).toBe(photos[1].title)
+      expect(wrapper.find('.Modal__photo').props().alt).toBe('full size')
     })
 
     it('opens modal on photo grid item click', () => {

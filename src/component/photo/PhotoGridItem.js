@@ -7,7 +7,7 @@ export default function PhotoGridItem(props) {
   const { title, thumbnailUrl, url } = props
   return (
     <div onClick={() => props.onClick(title, url)} className="GridItem">
-      <img src={thumbnailUrl} alt={title} />
+      <img src={thumbnailUrl} alt="thumbnail" />
       <p className="GridItem__title">{title}</p>
     </div>
   )
