@@ -1,4 +1,6 @@
 import 'react-app-polyfill/ie11'
+import 'core-js/fn/symbol/iterator.js'
+import 'core-js/es6/symbol.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactModal from 'react-modal'
