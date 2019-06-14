@@ -1,38 +1,40 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
+import { connect } from 'react-redux'
 
 import Container from '../Container'
 import Albums from './Albums'
-import { fetchAlbums } from '../../api/placeHolderClient'
+// import { fetchAlbums } from '../../api/placeHolderClient'
+import { fetchAlbums } from '../../actions'
 
 import '../Error.css'
 
-export default class ContainerWithAlbums extends React.Component {
+class ContainerWithAlbums extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       empty: false,
       error: false,
-      items: [],
       loading: false
     }
   }
 
   getItems = () => {
-    const { location } = this.props
+    const { fetchAlbums, location } = this.props
     const { start, limit } = queryString.parse(location.search)
     if (!isNaN(start) && !isNaN(limit)) {
-      this.setState({ loading: true, empty: false, error: false, items: [] })
-      fetchAlbums(this.props)
-        .then(response => {
-          if (response.data.length === 0) this.setState({ empty: true })
-          this.setState({
-            items: response.data,
-            loading: false
-          })
-        })
-        .catch(error => this.setState({ error: true, loading: false }))
+      // this.setState({ loading: true, empty: false, error: false, items: [] })
+      fetchAlbums()
+      // fetchAlbums(this.props)
+      //   .then(response => {
+      //     if (response.data.length === 0) this.setState({ empty: true })
+      //     this.setState({
+      //       items: response.data,
+      //       loading: false
+      //     })
+      //   })
+      //   .catch(error => this.setState({ error: true, loading: false }))
     }
   }
 
@@ -47,13 +49,13 @@ export default class ContainerWithAlbums extends React.Component {
   }
 
   render() {
-    const { items, loading } = this.state
-    const { history, location } = this.props
+    const { loading } = this.state
+    const { albums, history, location } = this.props
 
     return (
       <Container {...this.props}>
         <Albums
-          albums={items}
+          albums={albums}
           history={history}
           loading={loading}
           location={location}
@@ -62,6 +64,19 @@ export default class ContainerWithAlbums extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  albums: state.albums
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchAlbums: () => dispatch(fetchAlbums())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContainerWithAlbums)
 
 ContainerWithAlbums.propTypes = {
   location: PropTypes.shape({
