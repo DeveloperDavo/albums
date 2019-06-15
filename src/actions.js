@@ -1,21 +1,23 @@
+import axios from 'axios'
+
 // action types
-export const FETCH_ALBUMS = 'FETCH_ALBUMS'
+export const RECEIVE_ALBUMS = 'RECEIVE_ALBUMS'
 
 // actions creators
-export function fetchAlbums() {
+function receiveAlbums(response) {
   return {
-    type: FETCH_ALBUMS,
-    albums: [
-      {
-        userId: 1,
-        id: 1,
-        title: 'quidem molestiae enim'
-      },
-      {
-        userId: 1,
-        id: 2,
-        title: 'sunt qui excepturi placeat culpa'
-      }
-    ]
+    type: RECEIVE_ALBUMS,
+    albums: response.data
+  }
+}
+
+export function fetchAlbums() {
+  return dispatch => {
+    const BASE_URL = 'https://jsonplaceholder.typicode.com/'
+    const start = 0
+    const limit = 50
+    return axios
+      .get(`${BASE_URL}albums?_start=${start}&_limit=${limit}`)
+      .then(response => dispatch(receiveAlbums(response)))
   }
 }

@@ -1,4 +1,4 @@
-import { FETCH_ALBUMS } from './actions'
+import { RECEIVE_ALBUMS } from './actions'
 
 const initialState = {
   albums: []
@@ -6,7 +6,7 @@ const initialState = {
 
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_ALBUMS:
+    case RECEIVE_ALBUMS:
       return { ...state, albums: action.albums }
     default:
       return state
