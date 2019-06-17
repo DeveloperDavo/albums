@@ -14,7 +14,6 @@ class ContainerWithAlbums extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      empty: false,
       error: false
     }
   }
@@ -50,7 +49,7 @@ class ContainerWithAlbums extends React.Component {
     const { albums, history, loading, location } = this.props
 
     return (
-      <Container {...this.props}>
+      <Container {...this.props} empty={albums && albums.length === 0}>
         <Albums
           albums={albums}
           history={history}
