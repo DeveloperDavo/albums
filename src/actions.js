@@ -23,12 +23,10 @@ export const fetchAlbumsFailure = error => ({
 })
 
 /* async */
-export function fetchAlbums() {
+export function fetchAlbums(start, limit) {
   return dispatch => {
     dispatch(requestAlbums())
     const BASE_URL = 'https://jsonplaceholder.typicode.com/'
-    const start = 0
-    const limit = 50
     return axios
       .get(`${BASE_URL}albums?_start=${start}&_limit=${limit}`)
       .then(response => dispatch(receiveAlbums(response)))

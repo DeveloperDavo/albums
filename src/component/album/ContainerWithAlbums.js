@@ -14,7 +14,7 @@ class ContainerWithAlbums extends React.Component {
     const { fetchAlbums, location } = this.props
     const { start, limit } = queryString.parse(location.search)
     if (!isNaN(start) && !isNaN(limit)) {
-      fetchAlbums()
+      fetchAlbums(start, limit)
     }
   }
 
@@ -56,7 +56,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchAlbums: () => dispatch(fetchAlbums())
+  fetchAlbums: (start, limit) => dispatch(fetchAlbums(start, limit))
 })
 
 export default connect(
