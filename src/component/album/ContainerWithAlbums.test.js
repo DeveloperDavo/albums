@@ -75,15 +75,30 @@ xdescribe('ContainerWithAlbums', () => {
       expect(push).toHaveBeenCalledWith('/albums/1?start=0&limit=20')
     })
 
-    it('does not render Loading when not loading', () => {
-      const wrapper = shallow(<ContainerWithAlbums {...defaultProps} />)
+    it('renders album with album cover image', () => {
+      const data = [
+        {
+          userId: 23,
+          id: 1,
+          title: 'quidem molestiae enim'
+        }
+      ]
 
-      expect(
-        wrapper
-          .find(Albums)
-          .dive()
-          .find(ReactLoading).length
-      ).toBe(0)
+      const wrapper = shallow(
+        <ContainerWithAlbums {...defaultProps} items={data} />
+      )
+
+      const imgProps = wrapper
+        .find(Albums)
+        .dive()
+        .find(AlbumGridItem)
+        .at(0)
+        .dive()
+        .find('img')
+        .props()
+
+      expect(imgProps.src).toBe('https://via.placeholder.com/150/004ba0')
+      expect(imgProps.alt).toBe('thumbnail')
     })
   })
 })
