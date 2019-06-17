@@ -36,12 +36,14 @@ class ContainerWithAlbums extends React.Component {
         {...this.props}
         empty={(albums && albums.length === 0) || false}
       >
-        <Albums
-          albums={albums}
-          history={history}
-          loading={loading}
-          location={location}
-        />
+        {albums && (
+          <Albums
+            albums={albums}
+            history={history}
+            loading={loading}
+            location={location}
+          />
+        )}
       </Container>
     )
   }

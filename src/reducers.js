@@ -1,7 +1,7 @@
 import { RECEIVE_ALBUMS, REQUEST_ALBUMS, FETCH_ALBUMS_FAILURE } from './actions'
 
 const initialState = {
-  albums: [],
+  albums: null,
   error: false,
   loading: false
 }
