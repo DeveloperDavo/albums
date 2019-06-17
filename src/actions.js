@@ -1,9 +1,14 @@
 import axios from 'axios'
 
-// action types
+/* action types */
+export const REQUEST_ALBUMS = 'REQUEST_ALBUMS'
 export const RECEIVE_ALBUMS = 'RECEIVE_ALBUMS'
 
-// actions creators
+/* actions creators */
+export const requestAlbums = () => ({
+  type: REQUEST_ALBUMS
+})
+
 function receiveAlbums(response) {
   return {
     type: RECEIVE_ALBUMS,
@@ -13,6 +18,7 @@ function receiveAlbums(response) {
 
 export function fetchAlbums() {
   return dispatch => {
+    dispatch(requestAlbums())
     const BASE_URL = 'https://jsonplaceholder.typicode.com/'
     const start = 0
     const limit = 50

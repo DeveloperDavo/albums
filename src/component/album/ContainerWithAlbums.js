@@ -15,8 +15,7 @@ class ContainerWithAlbums extends React.Component {
     super(props)
     this.state = {
       empty: false,
-      error: false,
-      loading: false
+      error: false
     }
   }
 
@@ -24,7 +23,6 @@ class ContainerWithAlbums extends React.Component {
     const { fetchAlbums, location } = this.props
     const { start, limit } = queryString.parse(location.search)
     if (!isNaN(start) && !isNaN(limit)) {
-      // this.setState({ loading: true, empty: false, error: false, items: [] })
       fetchAlbums()
       // fetchAlbums(this.props)
       //   .then(response => {
@@ -49,8 +47,7 @@ class ContainerWithAlbums extends React.Component {
   }
 
   render() {
-    const { loading } = this.state
-    const { albums, history, location } = this.props
+    const { albums, history, loading, location } = this.props
 
     return (
       <Container {...this.props}>
@@ -66,7 +63,8 @@ class ContainerWithAlbums extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  albums: state.albums
+  albums: state.albums,
+  loading: state.loading
 })
 
 const mapDispatchToProps = dispatch => ({
