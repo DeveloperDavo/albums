@@ -42,6 +42,18 @@ describe('ContainerWithAlbums', () => {
 
     expect(wrapper.find('.GridItem').length).toBe(data.length)
   })
+
+  it('renders Loading when loading', () => {
+    const wrapper = mount(<ContainerWithAlbums {...defaultProps} loading />)
+
+    expect(wrapper.find(ReactLoading).length).toBe(1)
+  })
+
+  it('does not render Loading when not loading', () => {
+    const wrapper = mount(<ContainerWithAlbums {...defaultProps} />)
+
+    expect(wrapper.find(ReactLoading).length).toBe(0)
+  })
 })
 
 xdescribe('ContainerWithAlbums', () => {
@@ -61,17 +73,6 @@ xdescribe('ContainerWithAlbums', () => {
         .simulate('click')
 
       expect(push).toHaveBeenCalledWith('/albums/1?start=0&limit=20')
-    })
-
-    it('renders Loading when loading', () => {
-      const wrapper = shallow(<ContainerWithAlbums {...defaultProps} loading />)
-
-      expect(
-        wrapper
-          .find(Albums)
-          .dive()
-          .find(ReactLoading).length
-      ).toBe(1)
     })
 
     it('does not render Loading when not loading', () => {
