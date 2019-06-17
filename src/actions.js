@@ -3,6 +3,7 @@ import axios from 'axios'
 /* action types */
 export const REQUEST_ALBUMS = 'REQUEST_ALBUMS'
 export const RECEIVE_ALBUMS = 'RECEIVE_ALBUMS'
+export const FETCH_ALBUMS_FAILURE = 'FETCH_ALBUMS_FAILURE'
 
 /* actions creators */
 export const requestAlbums = () => ({
@@ -16,6 +17,12 @@ function receiveAlbums(response) {
   }
 }
 
+export const fetchAlbumsFailure = error => ({
+  type: FETCH_ALBUMS_FAILURE,
+  error
+})
+
+/* async */
 export function fetchAlbums() {
   return dispatch => {
     dispatch(requestAlbums())
@@ -25,5 +32,6 @@ export function fetchAlbums() {
     return axios
       .get(`${BASE_URL}albums?_start=${start}&_limit=${limit}`)
       .then(response => dispatch(receiveAlbums(response)))
+      .catch(err => dispatch(fetchAlbumsFailure(err)))
   }
 }
