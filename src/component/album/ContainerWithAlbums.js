@@ -9,7 +9,7 @@ import { fetchAlbums } from '../../actions'
 
 import '../Error.css'
 
-class ContainerWithAlbums extends React.Component {
+export class ContainerWithAlbums extends React.Component {
   getItems = () => {
     const { fetchAlbums, location } = this.props
     const { start, limit } = queryString.parse(location.search)
